@@ -70,7 +70,10 @@ const App = () => {
                 <GlobalStyles />
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/wikipedia-search-app"
+                            element={<Home />}
+                        />
                         <Route path="/wikipedia" element={<Wikipedia />} />
                         <Route path="/history" />
                         <Route path="*" element={<NotFound />} />
