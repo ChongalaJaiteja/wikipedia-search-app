@@ -8,7 +8,7 @@ const Home = () => {
     const [searchInput, onChangeInput] = useState("");
     const onSubmit = (event) => {
         event.preventDefault();
-        navigate(`/wikipedia?search_query=${searchInput}&type=ALL`);
+        navigate(`/wikipedia-search-app?search_query=${searchInput}&type=ALL`);
     };
 
     const renderHomeOptions = () => (
