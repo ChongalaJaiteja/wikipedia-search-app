@@ -1,0 +1,30 @@
+Code Viewing License
+
+1. Definitions:
+   - "Code" refers to the software code made available under this license.
+   - "You" refers to any person who views this code.
+
+2. License Grant:
+   - You are granted a limited, non-exclusive, and non-transferable right to view the Code solely for the purpose of inspection and review. You may not copy, modify, distribute, or use the Code for any other purpose.
+
+3. Restrictions:
+   - You may not reproduce, copy, or download the Code.
+   - You may not create derivative works based on the Code.
+   - You may not sublicense, sell, or transfer any rights granted under this license.
+
+4. No Warranties:
+   - The Code is provided "as is," without warranty of any kind, express or implied.
+
+5. Termination:
+   - This license automatically terminates if you breach any of its terms.
+
+6. Jurisdiction:
+   - This license is governed by and construed in accordance with the laws of [Your Jurisdiction]. Any legal action related to this license shall be brought in the courts of [Your Jurisdiction].
+
+7. Entire Agreement:
+   - This license constitutes the entire agreement between you and the author concerning the Code and supersedes all prior or contemporaneous representations, understandings, or agreements.
+
+8. Contact Information:
+   - For questions regarding this license, you can contact the author at https://github.com/ChongalaJaiteja.
+
+By viewing this Code, you agree to be bound by the terms and conditions of this Code Viewing License.
