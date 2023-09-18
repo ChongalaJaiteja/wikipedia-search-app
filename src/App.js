@@ -71,7 +71,7 @@ const App = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route
-                            path="/wikipedia-search-app"
+                            path="/wikipedia"
                             element={<Home />}
                         />
                         <Route path="/wikipedia" element={<Wikipedia />} />
