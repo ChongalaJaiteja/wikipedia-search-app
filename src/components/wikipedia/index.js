@@ -86,7 +86,7 @@ const Wikipedia = () => {
 
                 return (
                     <StyledComponents.NavBar>
-                        <StyledComponents.StyledLogoLink to="/">
+                        <StyledComponents.StyledLogoLink to="/wikipedia-search-app">
                             <StyledComponents.WikipediaNavLogo title="wikipedia" />
                         </StyledComponents.StyledLogoLink>
                         <StyledComponents.NavSearchFormContainer
@@ -131,15 +131,6 @@ const Wikipedia = () => {
     // );
 
     const RenderSearchResults = () => {
-        // if (error) {
-        //     console.log(error);
-        //     return <h1>error</h1>;
-        // }
-
-        // if (searchResults.length === 0) {
-        //     return <h1>Not found</h1>;
-        // }
-
         switch (currentSearchOptionId) {
             case "ALL":
                 return <AllSearchResults />;

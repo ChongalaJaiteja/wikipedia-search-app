@@ -8,6 +8,7 @@ const theme = css`
     color: var(--theme-primary-text-color);
     transition: var(--toggle-theme-transition);
 `;
+
 export const WikipediaMainBgContainer = styled.div`
     min-height: 100vh;
     width: 100%;
@@ -29,6 +30,7 @@ export const NavBar = styled.nav`
     --fs-theme-mode-logo: clamp(1rem, 1vw + 1.33rem, 1.8rem);
     top: 0;
     position: sticky;
+    z-index: 999;
     background-color: var(--theme-header-bg-color);
 `;
 export const StyledLogoLink = styled(Link)``;
@@ -43,6 +45,7 @@ export const NavSearchFormContainer = styled(SearchFormContainer)`
     max-width: 30rem;
 `;
 export const NavSearchInput = styled(SearchInput)``;
+
 export const DarkModeIcon = styled(BsMoonFill)`
     font-size: var(--fs-theme-mode-logo);
     cursor: pointer;

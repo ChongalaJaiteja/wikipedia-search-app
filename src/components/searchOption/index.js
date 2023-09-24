@@ -10,7 +10,7 @@ const SearchOption = (props) => {
 
     return (
         <StyledComponents.SearchOption
-            optionSelected={isCurrentSearchOption}
+            selected={isCurrentSearchOption}
             onClick={onSelectOption}
         >
             {option}

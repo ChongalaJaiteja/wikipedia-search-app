@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as StyledComponent from "./styledComponent";
 import { WikipediaContext } from "../../Context";
 import { useNavigate } from "react-router-dom";
+import SearchSuggestion from "../searchSuggestion";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -48,6 +49,9 @@ const Home = () => {
                         onChange={(event) => onChangeInput(event.target.value)}
                         value={searchInput}
                     />
+                    {/* {searchInput && (
+                        <SearchSuggestion searchInput={searchInput} />
+                    )} */}
                 </StyledComponent.SearchFormContainer>
             </StyledComponent.SearchBgContainer>
         </StyledComponent.HomeBgContainer>

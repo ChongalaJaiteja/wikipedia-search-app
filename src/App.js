@@ -1,3 +1,5 @@
+//All Rights Reserved
+// Import necessary components and libraries
 import Wikipedia from "./components/wikipedia";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
@@ -7,6 +9,7 @@ import { GlobalStyles } from "./golbalStyles";
 import { WikipediaContext } from "./Context";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
+// Define light and dark themes with their respective colors
 const theme = {
     light: {
         color: "black",
@@ -42,6 +45,7 @@ const theme = {
     },
 };
 
+// Define common colors used in both themes
 const commonColors = {
     primaryAccentColor: "#007BFF",
     secondaryAccentColor: "#FF4500",
@@ -50,26 +54,42 @@ const commonColors = {
     infoAccentColor: "#17A2B8",
 };
 
+// Define the main App component
 const App = () => {
-    const [isLightTheme, changeTheme] = useState(true);
-    const toggleTheme = () => changeTheme((prevState) => !prevState);
+    // Use useState to manage the theme state, and retrieve it from localStorage
+    const [isLightTheme, changeTheme] = useState(() =>
+        JSON.parse(localStorage.getItem("lightMode"))
+    );
 
+    // Function to toggle between light and dark themes
+    const toggleTheme = () => {
+        localStorage.setItem("lightMode", !isLightTheme);
+        changeTheme((prevState) => !prevState);
+    };
+
+    // Determine the current theme based on the state
     const currentTheme = {
         ...theme[isLightTheme ? "light" : "dark"],
         ...commonColors,
         isLightTheme,
     };
     return (
+        // Wrap the entire application in a theme provider with the current theme
         <ThemeProvider theme={currentTheme}>
+            {/* Provide theme-related context to components */}
             <WikipediaContext.Provider
                 value={{
                     isLightTheme,
                     toggleTheme,
                 }}
             >
+                {/* Apply global styles */}
                 <GlobalStyles />
+
+                {/* Set up routing using React Router */}
                 <BrowserRouter>
                     <Routes>
+                        {/* Define routes and their corresponding components */}
                         <Route
                             path="/wikipedia-search-app"
                             element={<Home />}
@@ -83,30 +103,5 @@ const App = () => {
         </ThemeProvider>
     );
 };
-// class App extends Component {
-//     state = {
-//         isLight: true,
-//     };
-
-//     toggleTheme = () => {
-//         this.setState((prevState) => ({ isLight: !prevState.isLight }));
-//     };
-
-//     render() {
-//         const { isLight } = this.state;
-//         const currentTheme = isLight ? { ...theme.light } : { ...theme.dark };
-
-//         return (
-//             <ThemeProvider theme={{ ...currentTheme, isLight }}>
-//                 <WikipediaContext.Provider
-//                     value={{ toggleTheme: this.toggleTheme }}
-//                 >
-//                     <GlobalStyles />
-//                     <Wikipedia />
-//                 </WikipediaContext.Provider>
-//             </ThemeProvider>
-//         );
-//     }
-// }
 
 export default App;

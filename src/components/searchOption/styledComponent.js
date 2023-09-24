@@ -6,7 +6,7 @@ export const SearchOption = styled.li`
     /* color: var(); */
     padding: 0.4em 0.7em;
     background-color: ${(props) =>
-        props.optionSelected
+        props.selected
             ? props.theme.isLightTheme
                 ? "#D8D9DA"
                 : "#495057"

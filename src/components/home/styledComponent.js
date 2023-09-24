@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs";
 
@@ -48,6 +48,15 @@ export const StyledLink = styled(Link)`
     text-decoration: none;
     color: var(--theme-primary-text-color);
     ${HomeOptions};
+`;
+
+export const RotateThemeIcon = keyframes`
+from {
+    rotate: 0deg;
+}
+to {
+    rotate: 95deg;
+}
 `;
 export const DarkModeIcon = styled(BsMoonFill)`
     font-size: var(--fs-theme-mode-logo);

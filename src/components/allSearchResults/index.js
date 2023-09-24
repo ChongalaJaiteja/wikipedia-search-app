@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import AllSearchItem from "../allsearchItem";
-import Loader from "../loader";
+
+import ContentLoader from "react-content-loader";
 import * as StyledComponent from "./styledComponent";
 
 const AllSearchResults = () => {
@@ -15,6 +16,7 @@ const AllSearchResults = () => {
     const [error, setError] = useState(null);
     const [offset, setOffset] = useState(0);
     const [limit] = useState(10);
+    const [fetchTime, setFetchTime] = useState(0);
     const handleNextPage = () => {
         if (offset + limit <= totalResults) {
             setOffset(offset + limit);
@@ -47,6 +49,17 @@ const AllSearchResults = () => {
     const renderResults = () => (
         <>
             <StyledComponent.AllSearchResultsBgContainer>
+                <StyledComponent.TotalSearchResults>
+                    {`${
+                        currentPage > 1
+                            ? `${offset + 1}-${offset + 10} of`
+                            : "About"
+                    } ${totalResults.toLocaleString()} results (${fetchTime.toFixed(
+                        2
+                    )} seconds)
+                    `}
+                </StyledComponent.TotalSearchResults>
+
                 {searchResults.map((eachSearch) => (
                     <AllSearchItem
                         key={uuidv4()}
@@ -142,6 +155,53 @@ const AllSearchResults = () => {
         </>
     );
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            // behavior: "smooth",
+        });
+    };
+
+    const renderLoaderView = () => {
+        const loaders = [];
+        scrollToTop();
+        for (let i = 0; i < limit; i++) {
+            loaders.push(
+                <ContentLoader
+                    speed={0.3}
+                    width="100%"
+                    height={124}
+                    viewBox="0 0 100% 124"
+                    backgroundColor="#e6e6e6"
+                    foregroundColor="#d4d4d4"
+                    key={i}
+                >
+                    <rect
+                        x="4"
+                        y="28"
+                        rx="10"
+                        ry="10"
+                        width="70%"
+                        height="18"
+                    />
+                    <rect
+                        x="4"
+                        y="52"
+                        rx="10"
+                        ry="10"
+                        width="99%"
+                        height="43"
+                    />
+                    <rect x="5" y="6" rx="10" ry="10" width="20%" height="17" />
+                </ContentLoader>
+            );
+        }
+        return (
+            <StyledComponent.ContentLoaderBgContainer>
+                {loaders}
+            </StyledComponent.ContentLoaderBgContainer>
+        );
+    };
     const renderFailureView = () => (
         <StyledComponent.FailedViewBgContainer>
             <StyledComponent.ErrorImg
@@ -177,6 +237,7 @@ const AllSearchResults = () => {
     const fetchData = async () => {
         setLoading(true);
         setError(null);
+        const start = performance.now();
         try {
             let apiUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery}&format=json&origin=*&sroffset=${offset}&srlimit=${limit}&srprop=snippet`;
             const response = await fetch(apiUrl);
@@ -186,6 +247,8 @@ const AllSearchResults = () => {
         } catch (error) {
             setError(error);
         } finally {
+            const end = performance.now();
+            setFetchTime((end - start) / 1000);
             setLoading(false);
         }
     };
@@ -200,7 +263,7 @@ const AllSearchResults = () => {
         fetchData();
     }, [offset]);
 
-    return <>{isLoading ? <Loader /> : getData()}</>;
+    return <>{isLoading ? renderLoaderView() : getData()}</>;
 };
 
 export default AllSearchResults;

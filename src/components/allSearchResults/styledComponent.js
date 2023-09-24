@@ -4,18 +4,24 @@ import { AiOutlineVerticalRight } from "react-icons/ai";
 
 export const AllSearchResultsBgContainer = styled.ul`
     list-style-type: none;
-    max-width: 40rem;
+    max-width: 50rem;
     min-height: 50vh;
     margin-bottom: clamp(1em, 1vw + 1.4em, 6em);
     display: flex;
     flex-direction: column;
     gap: 1.6em;
     padding: 0 1em;
+    position: relative;
     @media (min-width: 690px) {
         & {
             margin-left: 10%;
         }
     }
+`;
+
+export const TotalSearchResults = styled.li`
+    color: rgb(158, 158, 158);
+    font-size: clamp(0.4rem, 1vw + 0.7rem, 1.1rem);
 `;
 export const FailedViewBgContainer = styled.div`
     width: min(100%, 40rem);
@@ -48,6 +54,19 @@ export const NoResultsFoundImg = styled.img`
     width: min(80%, 26rem);
 `;
 
+export const ContentLoaderBgContainer = styled.div`
+    max-width: 40rem;
+    min-height: 50vh;
+    margin-bottom: clamp(1em, 1vw + 1.4em, 6em);
+    display: flex;
+    flex-direction: column;
+    padding: 0 1em;
+    @media (min-width: 690px) {
+        & {
+            margin-left: 10%;
+        }
+    }
+`;
 export const PaginationContainerLg = styled.div`
     width: 100%;
     display: none;
