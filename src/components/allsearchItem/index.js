@@ -1,20 +1,21 @@
 import { useState } from "react";
-import SharePopupModel from "../sharePopupModel";
+import PopupModel from "../popupModel";
+import ShareModel from "../shareModel";
 import * as StyledComponent from "./styledComponent";
 
-const AllSearchItem = (props) => {
-    const { searchItemDetails } = props;
+const AllSearchItem = ({ searchItemDetails }) => {
     const { title, pageid, snippet } = searchItemDetails;
     const link = `https://en.wikipedia.org/wiki/${title}`;
     const [showModel, setShowModel] = useState(false);
-    const closeModel = (event) => {
-        event.stopPropagation();
-        setShowModel(false);
-    };
     return (
         <>
             {showModel && (
-                <SharePopupModel closeModel={closeModel} link={link} />
+                <PopupModel closeModel={() => setShowModel(false)}>
+                    <ShareModel
+                        closeModel={() => setShowModel(false)}
+                        link={link}
+                    />
+                </PopupModel>
             )}
             <StyledComponent.SearchItem>
                 <StyledComponent.TitleShareContainer>

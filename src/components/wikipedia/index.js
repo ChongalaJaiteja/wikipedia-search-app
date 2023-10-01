@@ -21,17 +21,10 @@ const Wikipedia = () => {
     const [searchInput, setSearchInput] = useState(searchQuery);
     const [currentSearchOptionId, setSearchOptionId] =
         useState(searchQueryType);
-    // const [searchResults, setSearchResults] = useState([]);
-    // const [isLoading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
 
     const onSubmitSearchInput = (event) => {
         event.preventDefault();
-        navigate(`/wikipedia?search_query=${searchInput}&type=ALL`);
-    };
-
-    const changeSearchInput = (event) => {
-        setSearchInput(event.target.value);
+        navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
     };
 
     const onSelectSearchOption = (id) => {
@@ -39,43 +32,10 @@ const Wikipedia = () => {
         setQuery({ search_query: searchInput, type: id });
     };
 
-    // const fetchData = async () => {
-    //     let apiUrl;
-    //     // console.log("search type", currentSearchOptionId);
-    //     switch (currentSearchOptionId) {
-    //         case "ALL":
-    //             apiUrl = `https://apis.ccbp.in/wiki-search?search=${query.get(
-    //                 "search_query"
-    //             )}`;
-    //             break;
-    //         case "IMAGES":
-    //             apiUrl = "image";
-    //             break;
-    //         // case "HISTORY":
-    //         //     console.log("history");
-    //         //     break;
-    //         default:
-    //             alert("Error");
-    //     }
-    //     setLoading(true);
-    //     setError(null);
-    //     try {
-    //         const response = await fetch(apiUrl);
-    //         let data = await response.json();
-    //         if (currentSearchOptionId === "ALL") data = data.search_results;
-    //         setSearchResults(data);
-    //     } catch (error) {
-    //         setError(error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
     useEffect(() => {
         if (query) {
             setSearchInput(searchQuery);
             setSearchOptionId(searchQueryType);
-            // fetchData();
         }
     }, [query]);
 
@@ -95,7 +55,9 @@ const Wikipedia = () => {
                             <StyledComponents.NavSearchInput
                                 type="search"
                                 placeholder="Enter a Keyword"
-                                onChange={changeSearchInput}
+                                onChange={(event) =>
+                                    setSearchInput(event.target.value)
+                                }
                                 value={searchInput}
                             />
                         </StyledComponents.NavSearchFormContainer>
@@ -103,9 +65,9 @@ const Wikipedia = () => {
                             onClick={toggleTheme}
                         >
                             {isLightTheme ? (
-                                <StyledComponents.DarkModeIcon />
+                                <StyledComponents.NavDarkModeIcon title="dark mode" />
                             ) : (
-                                <StyledComponents.LightModeIcon />
+                                <StyledComponents.NavLightModeIcon title="light mode" />
                             )}
                         </StyledComponents.NavBarToggleThemeContainer>
                     </StyledComponents.NavBar>
@@ -113,22 +75,6 @@ const Wikipedia = () => {
             }}
         </WikipediaContext.Consumer>
     );
-
-    // const RenderLoader = () => (
-    //     <>
-    //         <StyledComponents.LoaderContainer>
-    //             <ScaleLoader color="hsla(213, 70%, 71%, 1)" />
-    //         </StyledComponents.LoaderContainer>
-    //     </>
-    // );
-
-    // const RenderAllSearchResults = () => (
-    //     <ul>
-    //         {searchResults.map((eachSearch) => (
-    //             <AllSearchItem key={uuidv4()} searchItemDetails={eachSearch} />
-    //         ))}
-    //     </ul>
-    // );
 
     const RenderSearchResults = () => {
         switch (currentSearchOptionId) {

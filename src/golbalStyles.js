@@ -14,7 +14,7 @@ export const GlobalStyles = createGlobalStyle`
     --theme-divide-line-color:${(props) => props.theme.divideLineColor};
     --theme-input-bg-color:${(props) => props.theme.inputBackgroundColor};
     --theme-input-text-color:${(props) => props.theme.inputText};
-    --theme-input-border-color: ${(props) => props.theme.inputBoaderColor};
+    --theme-input-border-color: ${(props) => props.theme.inputBorderColor};
     --theme-input-placeholder-text-color: ${(props) =>
         props.theme.placeholderText};
     --theme-primary-color:${(props) => props.theme.primaryAccentColor};

@@ -9,7 +9,7 @@ export const WhatsappIcon = styled(BsWhatsapp)`
     border-radius: 10px;
     padding: 0.22em;
     cursor: pointer;
-    font-size: clamp(1rem, 1vw + 1.6rem, 2.2rem);
+    font-size: clamp(1rem, 1vw + 1.6rem, 2rem);
 `;
 export const FacebookIcon = styled(BsFacebook)`
     color: white;
@@ -17,7 +17,7 @@ export const FacebookIcon = styled(BsFacebook)`
     border-radius: 10px;
     padding: 0.22em;
     cursor: pointer;
-    font-size: clamp(1rem, 1vw + 1.6rem, 2.2rem);
+    font-size: clamp(1rem, 1vw + 1.6rem, 2rem);
 `;
 
 export const TwitterIcon = styled(FaXTwitter)`
@@ -26,7 +26,7 @@ export const TwitterIcon = styled(FaXTwitter)`
     border-radius: 10px;
     padding: 0.22em;
     cursor: pointer;
-    font-size: clamp(1rem, 1vw + 1.6rem, 2.2rem);
+    font-size: clamp(1rem, 1vw + 1.6rem, 2rem);
 `;
 
 export const EmailIcon = styled(AiOutlineMail)`
@@ -35,7 +35,7 @@ export const EmailIcon = styled(AiOutlineMail)`
     border-radius: 10px;
     padding: 0.22em;
     cursor: pointer;
-    font-size: clamp(1rem, 1vw + 1.6rem, 2.2rem);
+    font-size: clamp(1rem, 1vw + 1.6rem, 2rem);
 `;
 
 export const LinkedinIcon = styled(BsLinkedin)`
@@ -44,12 +44,14 @@ export const LinkedinIcon = styled(BsLinkedin)`
     border-radius: 10px;
     padding: 0.22em;
     cursor: pointer;
-    font-size: clamp(1rem, 1vw + 1.6rem, 2.2rem);
+    font-size: clamp(1rem, 1vw + 1.6rem, 2rem);
 `;
 
 export const SocialMediaPlatformItem = styled.li`
-    /* outline: auto; */
     text-align: center;
+    &:hover {
+        transform: scale(1.01);
+    }
 `;
 
 export const SocialMediaName = styled.p`

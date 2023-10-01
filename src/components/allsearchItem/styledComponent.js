@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { PiShareFat } from "react-icons/pi";
+import { AiOutlineClose } from "react-icons/ai";
 
 export const SearchItem = styled.li`
     display: flex;
@@ -12,7 +13,6 @@ export const TitleShareContainer = styled.div`
     align-items: center;
     width: 100%;
     justify-content: space-between;
-    margin-bottom: 0.2em;
 `;
 export const SearchItemTitle = styled.a`
     text-decoration: none;
@@ -47,5 +47,3 @@ export const SearchItemDescription = styled.p`
     margin: 0.51em 0;
     color: var(--theme-header-text-color);
 `;
-
-

@@ -1,30 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 
-export const PopupBgContainer = styled.div`
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const PopupModel = styled.div`
-    background-color: var(--theme-container-bg-color);
-    border-radius: 15px;
-    width: min(85%, 30rem);
-    /* outline: auto; */
-    /* border: 1px solid var(--theme-border-color); */
-    padding: 0.9em 0.8em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    /* & > * {
-        outline: auto;
-    } */
-`;
-
-export const PopupHeaderContainer = styled.div`
+export const SharePopupHeaderContainer = styled.div`
     display: flex;
     align-items: center;
     /* outline: auto; */
@@ -36,23 +13,22 @@ export const MainHeading = styled.h1`
 `;
 
 export const PopUpCloseIcon = styled(AiOutlineClose)`
-    font-size: clamp(1rem, 1vw + 1.2rem, 1.6rem);
+    font-size: clamp(1rem, 1vw + 1.1rem, 1.6rem);
     cursor: pointer;
     border-radius: 100%;
-    padding: 0.14em;
+    padding: 0.1em;
     &:hover {
         background-color: red;
         color: white;
     }
 `;
-
 export const SharePlatformsBgContainer = styled.ul`
     list-style-type: none;
     padding: 0;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 1em;
     overflow-x: auto;
     border-bottom: 1px solid var(--theme-divide-line-color);
@@ -71,10 +47,8 @@ export const SharePlatformsBgContainer = styled.ul`
 `;
 
 export const WikipediaLinkContainer = styled.div`
-    /* outline: auto; */
     display: flex;
-    gap: 0 0.6em;
-    flex-wrap: wrap;
+    gap: 0.5em;
     justify-content: space-between;
     align-items: center;
     border: 1px solid var(--theme-input-border-color);
@@ -86,6 +60,9 @@ export const WikiUrl = styled.p`
     color: var(----theme-primary-text-color);
     margin-inline: auto;
     word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     font-size: clamp(0.3rem, 1vw + 0.7rem, 1rem);
 `;
 

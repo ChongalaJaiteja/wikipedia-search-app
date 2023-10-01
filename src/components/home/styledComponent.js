@@ -26,6 +26,7 @@ export const HomeOptionsContainer = styled.ul`
     align-self: flex-end;
     list-style: none;
     padding: 0;
+    margin-top: 1.5em;
     padding-inline: 1em;
     display: flex;
     align-items: center;
@@ -35,6 +36,7 @@ export const HomeOptionsContainer = styled.ul`
     }
     @media (min-width: 630px) {
         & {
+            margin-top: 2em;
             gap: 2.4em;
         }
     }
@@ -42,30 +44,64 @@ export const HomeOptionsContainer = styled.ul`
 export const HomeOptions = styled.li`
     text-decoration: none;
     color: var(--theme-primary-text-color);
+    font-size: clamp(0.6rem, 1vw + 0.66rem, 1rem);
+`;
+
+export const onHoverOption = keyframes`
+from {
+    right: 100%;
+} to {
+    right: 0;
+}
 `;
 
 export const StyledLink = styled(Link)`
     text-decoration: none;
     color: var(--theme-primary-text-color);
     ${HomeOptions};
+    position: relative;
+    &:hover:after {
+        content: "";
+        background-color: var(--theme-info-color);
+        padding: 0.07em;
+        margin-top: 0.2em;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        border-radius: 14px;
+        animation: ${onHoverOption} 0.14s ease-in 0s 1 forwards;
+    }
+`;
+
+export const LoginBtn = styled.button`
+    background-color: var(--theme-primary-color);
+    border: none;
+    color: white;
+    font-size: clamp(0.6rem, 1vw + 0.65rem, 1rem);
+    padding: 0.3em clamp(0.2em, 1vw + 1em, 1em);
+    border-radius: 11px;
+    cursor: pointer;
 `;
 
 export const RotateThemeIcon = keyframes`
 from {
-    rotate: 0deg;
+    rotate: 54deg;
 }
 to {
-    rotate: 95deg;
+    rotate: -5deg;
 }
 `;
 export const DarkModeIcon = styled(BsMoonFill)`
     font-size: var(--fs-theme-mode-logo);
     cursor: pointer;
+    animation: ${RotateThemeIcon} 0.3s linear forwards;
 `;
 export const LightModeIcon = styled(BsFillSunFill)`
     font-size: var(--fs-theme-mode-logo);
     cursor: pointer;
     color: yellow;
+    animation: none;
+    animation: ${RotateThemeIcon} 0.3s linear forwards reverse 1;
 `;
 export const SearchBgContainer = styled.div`
     align-self: center;
@@ -74,16 +110,17 @@ export const SearchBgContainer = styled.div`
     max-width: 35rem;
     display: flex;
     flex-direction: column;
-    gap: 3em;
+    gap: 2.5em;
 `;
 
 export const WikipediaImage = styled.img`
     width: 42%;
-    max-width: 16rem;
+    max-width: 13.6rem;
     align-self: center;
 `;
 
 export const SearchFormContainer = styled.form``;
+
 export const SearchInput = styled.input`
     border: 1px solid var(--theme-input-border-color);
     width: 100%;

@@ -24,7 +24,7 @@ const theme = {
         inputBackgroundColor: "white",
         inputText: "black",
         placeholderText: "#888888",
-        inputBoaderColor: "#bfbfbfbf",
+        inputBorderColor: "#bfbfbfbf",
         linkColor: "#007BFF",
     },
     dark: {
@@ -40,7 +40,7 @@ const theme = {
         inputBackgroundColor: "#333333",
         inputText: "#FFFFFF",
         placeholderText: "#888888",
-        inputBoaderColor: "#555555",
+        inputBorderColor: "#555555",
         linkColor: "rgb(57, 153, 255)",
     },
 };

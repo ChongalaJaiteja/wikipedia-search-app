@@ -1,92 +1,186 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Masonry from "react-responsive-masonry";
+import { v4 as uuidv4 } from "uuid";
+import ContentLoader from "react-content-loader";
+import Loader from "../loader";
 import * as StyledComponent from "./styledComponent";
+import Pagination from "../pagination";
+import ReloadPage from "../reloadPage";
 
 const ImageSearch = () => {
     const [query] = useSearchParams();
     const searchQuery = query.get("search_query");
-    const [titlesData, setTitlesData] = useState([]);
-    const [imagesData, setImagesData] = useState(new Set());
     const limit = 10;
     const [offset, setOffset] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    // const [titles, setTitles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [isError, setError] = useState(false);
+    const [imagesList, setImageUrls] = useState([]);
 
-    const fetchTitles = async () => {
+    const handelCurrentPage = ({ currentPage, offset }) => {
+        setCurrentPage(currentPage);
+        setOffset(offset);
+    };
+
+    const fetchImages = async () => {
+        setError(false);
+        setLoading(true);
         try {
-            const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery}&format=json&origin=*&srprop=title&srlimit=${limit}&sroffset=${offset}`;
-            const response = await fetch(url);
-            const fetchedTitles = await response.json();
-            const titles = fetchedTitles.query.search.map(
-                (eachTitle) => eachTitle.title
+            const titlesResponse = await fetch(
+                `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery}&format=json&origin=*&srprop=title&srlimit=${limit}&sroffset=${offset}`
             );
-            // console.log("titles", titles);
-            setTitlesData(titles);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+            const titlesData = await titlesResponse.json();
+            const fetchedTitles = titlesData.query.search.map(
+                ({ title }) => title
+            );
 
-    const fetchImages = async (title) => {
-        if (titlesData.length > 0) {
-            try {
-                const url = `https://en.wikipedia.org/w/api.php?action=query&prop=images&titles=${title}&format=json&origin=*`;
-                const response = await fetch(url);
-                const imagesList = await response.json();
-                const tempImagesSet = new Set();
-                for (let pageId in imagesList.query.pages) {
-                    const images = imagesList.query.pages[pageId].images
-                        .map((eachImage) => eachImage.title)
-                        .filter(
-                            (eachImageTitle) =>
-                                !eachImageTitle.endsWith(".svg") &&
-                                !eachImageTitle.endsWith(".gif") &&
-                                !eachImageTitle.endsWith(".png")
-                        );
-                    // console.log(pageId, images);
-                    images.forEach((eachImageFile) =>
-                        tempImagesSet.add(eachImageFile)
-                    );
-                }
-                // console.log("temp image set", tempImagesSet);
-                setImagesData(
-                    (prevImage) => new Set([...prevImage, ...tempImagesSet])
+            const filteredImagesSet = new Set();
+
+            const imagePromises = fetchedTitles.map(async (wikipediaTitle) => {
+                const imageResponse = await fetch(
+                    `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=images&titles=${wikipediaTitle}`
                 );
-                // setImagesData(prevImage => (...prevImage,...tempImagesSet));
-                // const tempImageArray = [...tempImagesSet];
-                // setImagesData((prevImages) => [
-                //     ...prevImages,
-                //     ...tempImageArray,
-                // ]);
-                // console.log("images", tempImageArray);
-                // console.log("titles", titlesData);
-            } catch (error) {
-                console.log(error);
-            }
+                const imageData = await imageResponse.json();
+                const images =
+                    imageData.query.pages[Object.keys(imageData.query.pages)[0]]
+                        .images || [];
+                images.forEach(({ title }) => {
+                    if (
+                        title.toLowerCase().endsWith(".jpg") ||
+                        title.toLowerCase().endsWith(".jpeg")
+                    ) {
+                        filteredImagesSet.add({ title, wikipediaTitle });
+                    }
+                });
+
+                return null;
+            });
+
+            await Promise.all(imagePromises);
+
+            const uniqueImagesArray = Array.from(filteredImagesSet).map(
+                ({ title, wikipediaTitle }) => {
+                    let newTitle = title.slice(5);
+                    if (newTitle.toLowerCase().trim().endsWith(".jpg")) {
+                        newTitle = newTitle.slice(0, newTitle.length - 4);
+                    } else newTitle = newTitle.slice(0, newTitle.length - 5);
+
+                    return {
+                        url: `https://en.wikipedia.org/wiki/Special:FilePath/${title}`,
+                        title: newTitle,
+                        wikipediaTitle,
+                    };
+                }
+            );
+
+            setImageUrls(uniqueImagesArray);
+        } catch (error) {
+            setError(true);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const fetchImagesForTitle = async () => {
-        for (let title of titlesData) {
-            // console.log(title);
-            await fetchImages(title);
-        }
+    const renderLoaderView = () => {
+        const svgLoader = (
+            <ContentLoader
+                speed={0.4}
+                width="100%"
+                height={324}
+                viewBox="0 0 476 100%"
+                backgroundColor="#dedede"
+                foregroundColor="#bababa"
+            >
+                <rect x="35" y="8" rx="10" ry="10" width="172" height="177" />
+                <rect x="411" y="104" rx="0" ry="0" width="6" height="0" />
+                <rect x="34" y="194" rx="10" ry="10" width="176" height="21" />
+            </ContentLoader>
+        );
+        return (
+            <Loader svgLoader={svgLoader} limit={limit} isImageLayout={true} />
+        );
+    };
+
+    const renderErrorView = () => {
+        const reloadImageUrl =
+            "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1";
+        return (
+            <ReloadPage
+                reloadImageUrl={reloadImageUrl}
+                reloadFunction={fetchImages}
+                reloadText="Retry"
+            />
+        );
+    };
+    const renderimagesNotFoundView = () => <h1>Not found</h1>;
+
+    const renderImagesView = () => {
+        return (
+            <>
+                <StyledComponent.ResponsiveMansoryLayout
+                    columnsCountBreakPoints={{
+                        320: 1,
+                        440: 2,
+                        590: 3,
+                        825: 4,
+                        1100: 5,
+                    }}
+                >
+                    <Masonry gutter="1em">
+                        {imagesList.map((eachImageCard, index) => (
+                            <StyledComponent.WikipediaTitleLink
+                                href={`https://en.wikipedia.org/wiki/${eachImageCard.wikipediaTitle}`}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <StyledComponent.ImageCard key={uuidv4()}>
+                                    <StyledComponent.WikipediaImage
+                                        src={eachImageCard.url}
+                                        alt={eachImageCard.title}
+                                        loading="lazy"
+                                    />
+                                    <StyledComponent.ImageCardContent>
+                                        <StyledComponent.WikipediaTitleLink
+                                            href={`https://en.wikipedia.org/wiki/${eachImageCard.wikipediaTitle}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            title={eachImageCard.title}
+                                        >
+                                            <StyledComponent.ImageCardTitle>
+                                                {eachImageCard.title}
+                                            </StyledComponent.ImageCardTitle>
+                                        </StyledComponent.WikipediaTitleLink>
+                                    </StyledComponent.ImageCardContent>
+                                </StyledComponent.ImageCard>
+                            </StyledComponent.WikipediaTitleLink>
+                        ))}
+                    </Masonry>
+                </StyledComponent.ResponsiveMansoryLayout>
+                <Pagination
+                    currentPage={currentPage}
+                    totalResults={100}
+                    limit={limit}
+                    offset={offset}
+                    handelCurrentPage={handelCurrentPage}
+                />
+            </>
+        );
+    };
+
+    const renderImages = () => {
+        if (loading) return renderLoaderView();
+        else if (isError) return renderErrorView();
+        else if (imagesList.length === 0) return renderimagesNotFoundView();
+        else return renderImagesView();
     };
 
     useEffect(() => {
-        fetchTitles();
-    }, [searchQuery]);
+        fetchImages();
+    }, [searchQuery, offset]);
 
-    useEffect(() => {
-        if (imagesData.size > 0) {
-            console.log("image data", imagesData);
-        }
-    }, [imagesData]);
-    useEffect(() => {
-        if (titlesData.length > 0) {
-            fetchImagesForTitle();
-            // console.log(titlesData);
-            // console.log("image");
-        }
-    }, [titlesData]);
-    return <h1>image</h1>;
+    return <>{renderImages()}</>;
 };
+
 export default ImageSearch;

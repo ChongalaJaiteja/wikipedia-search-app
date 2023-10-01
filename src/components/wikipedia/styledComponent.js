@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
-import { BsWikipedia, BsMoonFill, BsFillSunFill } from "react-icons/bs";
+import { BsWikipedia } from "react-icons/bs";
 import { SearchFormContainer, SearchInput } from "../home/styledComponent";
 import { Link } from "react-router-dom";
-
+import { DarkModeIcon, LightModeIcon } from "../home/styledComponent";
 const theme = css`
     background-color: var(--theme-page-bg-color);
     color: var(--theme-primary-text-color);
@@ -12,7 +12,6 @@ const theme = css`
 export const WikipediaMainBgContainer = styled.div`
     min-height: 100vh;
     width: 100%;
-    /* border: 2px solid red; */
     display: flex;
     flex-direction: column;
     ${theme}
@@ -23,7 +22,6 @@ export const NavBar = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* border-bottom: 1px solid #bfbfbf; */
     box-shadow: 0px 2px 3px 1px #495057;
     padding: clamp(0.5em, 1vw + 0.6em, 0.8em) clamp(1em, 1vw + 1.1em, 3em);
     --fs-logo: clamp(1rem, 1vw + 1.8rem, 2.7rem);
@@ -46,14 +44,11 @@ export const NavSearchFormContainer = styled(SearchFormContainer)`
 `;
 export const NavSearchInput = styled(SearchInput)``;
 
-export const DarkModeIcon = styled(BsMoonFill)`
+export const NavDarkModeIcon = styled(DarkModeIcon)`
     font-size: var(--fs-theme-mode-logo);
-    cursor: pointer;
 `;
-export const LightModeIcon = styled(BsFillSunFill)`
+export const NavLightModeIcon = styled(LightModeIcon)`
     font-size: var(--fs-theme-mode-logo);
-    cursor: pointer;
-    color: yellow;
 `;
 export const SearchHeader = styled.div`
     display: flex;

@@ -1,7 +1,6 @@
 import * as StyledComponent from "./styledComponent";
 
-const SocialMediaPlatform = (props) => {
-    const { socialMediaDetails, wikipediaLink } = props;
+const SocialMediaPlatform = ({ socialMediaDetails, wikipediaLink }) => {
     const { name, StyledIcon, id } = socialMediaDetails;
 
     const socialMediaIcons = {
@@ -29,7 +28,7 @@ const SocialMediaPlatform = (props) => {
             const emailSubject = "Check out this link";
             socialMediaUrl = `mailto:?subject=${emailSubject}&body=${encodeUrl}`;
             break;
-        case "LINKENDIN":
+        case "LINKEDIN":
             socialMediaUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeUrl}`;
             break;
         default:
