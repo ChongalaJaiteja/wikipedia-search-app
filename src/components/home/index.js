@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as StyledComponent from "./styledComponent";
 import { WikipediaContext } from "../../Context";
 import { useNavigate } from "react-router-dom";
+import { useModelState } from "../../modelStateContext";
 import PopupModel from "../popupModel";
 import Authentication from "../authentication";
 import SearchSuggestion from "../searchSuggestion";
@@ -12,7 +13,7 @@ const Home = () => {
 
     // Define a state variable for the search input and a function to update it
     const [searchInput, onChangeInput] = useState("");
-    const [showModel, setShowModel] = useState(false);
+    const { openModel } = useModelState();
 
     // Define a function to handle form submission
     const onSubmit = (event) => {
@@ -36,9 +37,7 @@ const Home = () => {
                         </StyledComponent.HomeOptions>
 
                         <StyledComponent.HomeOptions title="Login">
-                            <StyledComponent.LoginBtn
-                                onClick={() => setShowModel(true)}
-                            >
+                            <StyledComponent.LoginBtn onClick={openModel}>
                                 Login / Signup
                             </StyledComponent.LoginBtn>
                         </StyledComponent.HomeOptions>
@@ -59,11 +58,9 @@ const Home = () => {
     return (
         <StyledComponent.HomeBgContainer>
             {/* Render the home options */}
-            {showModel && (
-                <PopupModel closeModel={() => setShowModel(false)}>
-                    <Authentication closeModel={() => setShowModel(false)} />
-                </PopupModel>
-            )}
+            <PopupModel>
+                <Authentication />
+            </PopupModel>
             {renderHomeOptions()}
             <StyledComponent.SearchBgContainer>
                 <StyledComponent.WikipediaImage

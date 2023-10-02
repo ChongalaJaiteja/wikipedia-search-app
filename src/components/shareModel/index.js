@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useModelState } from "../../modelStateContext";
 import * as StyledComponent from "./styledComponent";
 import SocialMediaPlatform from "../socialMediaPlatform";
 
@@ -30,8 +31,9 @@ const socialMediaList = [
     },
 ];
 
-const ShareModel = ({ closeModel, link }) => {
+const ShareModel = ({ link }) => {
     const [copyWikiUrl, setCopyWikiUrl] = useState(false);
+    const {closeModel } = useModelState();
 
     const onCopyWikiUrl = () => {
         navigator.clipboard.writeText(link).then(() => setCopyWikiUrl(true));

@@ -1,14 +1,20 @@
 import * as StyledComponent from "./styledComponent";
+import { useModelState } from "../../modelStateContext";
 
-const PopupModel = ({ closeModel, children }) => {
+const PopupModel = ({ children }) => {
     const handelPropagation = (event) => event.stopPropagation();
+    const { showModel, closeModel } = useModelState();
 
     return (
-        <StyledComponent.PopupBgContainer onClick={closeModel}>
-            <StyledComponent.PopupModel onClick={handelPropagation}>
-                {children}
-            </StyledComponent.PopupModel>
-        </StyledComponent.PopupBgContainer>
+        <>
+            {showModel && (
+                <StyledComponent.PopupBgContainer onClick={closeModel}>
+                    <StyledComponent.PopupModel onClick={handelPropagation}>
+                        {children}
+                    </StyledComponent.PopupModel>
+                </StyledComponent.PopupBgContainer>
+            )}
+        </>
     );
 };
 

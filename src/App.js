@@ -5,9 +5,10 @@ import Home from "./components/home";
 import NotFound from "./components/notFound";
 import { useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { GlobalStyles } from "./golbalStyles";
+import { GlobalStyles } from "./globalStyles";
 import { WikipediaContext } from "./Context";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { ModelStateProvider } from "./modelStateContext";
 
 // Define light and dark themes with their respective colors
 const theme = {
@@ -86,19 +87,21 @@ const App = () => {
                 {/* Apply global styles */}
                 <GlobalStyles />
 
-                {/* Set up routing using React Router */}
-                <BrowserRouter>
-                    <Routes>
-                        {/* Define routes and their corresponding components */}
-                        <Route
-                            path="/wikipedia-search-app"
-                            element={<Home />}
-                        />
-                        <Route path="/wikipedia" element={<Wikipedia />} />
-                        <Route path="/history" />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </BrowserRouter>
+                <ModelStateProvider>
+                    {/* Set up routing using React Router */}
+                    <BrowserRouter>
+                        <Routes>
+                            {/* Define routes and their corresponding components */}
+                            <Route
+                                path="/wikipedia-search-app"
+                                element={<Home />}
+                            />
+                            <Route path="/wikipedia" element={<Wikipedia />} />
+                            <Route path="/history" />
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </BrowserRouter>
+                </ModelStateProvider>
             </WikipediaContext.Provider>
         </ThemeProvider>
     );

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as StyleComponent from "./styledComponent";
+import { useModelState } from "../../modelStateContext";
 import SignIn from "../signin";
 import Signup from "../signup";
 
@@ -8,9 +9,9 @@ const tabs = [
     { tabId: "SIGNUP", label: "Sign up" },
 ];
 
-const Authentication = ({ closeModel }) => {
+const Authentication = () => {
     const [currentTab, setCurrentTab] = useState(tabs[0].tabId);
-
+    const { closeModel } = useModelState();
     const handleTabClick = (tabId) => {
         setCurrentTab(tabId);
     };
