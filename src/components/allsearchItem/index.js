@@ -1,19 +1,11 @@
-import { useModelState } from "../../modelStateContext";
-import PopupModel from "../popupModel";
-import ShareModel from "../shareModel";
 import * as StyledComponent from "./styledComponent";
 
-const AllSearchItem = ({ searchItemDetails }) => {
+const AllSearchItem = ({ searchItemDetails, onShareLink }) => {
     const { title, pageid, snippet } = searchItemDetails;
     const link = `https://en.wikipedia.org/wiki/${title}`;
-    // const [showModel, setShowModel] = useState(false);
-    const {openModel } = useModelState();
 
     return (
         <>
-            <PopupModel>
-                <ShareModel link={link} />
-            </PopupModel>
             <StyledComponent.SearchItem>
                 <StyledComponent.TitleShareContainer>
                     <StyledComponent.SearchItemTitle
@@ -22,7 +14,9 @@ const AllSearchItem = ({ searchItemDetails }) => {
                     >
                         {title}
                     </StyledComponent.SearchItemTitle>
-                    <StyledComponent.ShareIconContainer onClick={openModel}>
+                    <StyledComponent.ShareIconContainer
+                        onClick={() => onShareLink(link)}
+                    >
                         <StyledComponent.ShareIcon />
                         <StyledComponent.ShareText>
                             Share

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useModelState } from "../../modelStateContext";
 import { useSearchParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import AllSearchItem from "../allsearchItem";
@@ -8,6 +9,8 @@ import * as StyledComponent from "./styledComponent";
 import Loader from "../loader";
 import ReloadPage from "../reloadPage";
 import NoResultsFound from "../noResultsFound";
+import PopupModel from "../popupModel";
+import ShareModel from "../shareModel";
 
 const AllSearchResults = () => {
     const [query] = useSearchParams();
@@ -20,14 +23,30 @@ const AllSearchResults = () => {
     const [offset, setOffset] = useState(0);
     const limit = 10;
     const [fetchTime, setFetchTime] = useState(0);
+    const { openModel } = useModelState();
+    const [shareLink, setShareLink] = useState("");
 
+    const images = {
+        reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
+        noResults:
+            "https://img.freepik.com/free-vector/flat-design-no-data-illustration_23-2150527142.jpg?w=740&t=st=1695036731~exp=1695037331~hmac=a793ff5dde6918e306e53726059eb01dd5fa0b560067e4e9df6e20a3d4715314",
+    };
     const handelCurrentPage = ({ currentPage, offset }) => {
         setCurrentPage(currentPage);
         setOffset(offset);
     };
 
+    const onShareLink = (link) => {
+        setShareLink(link);
+        openModel();
+    };
+
     const renderResults = () => (
         <>
+            <PopupModel>
+                <ShareModel link={shareLink} />
+            </PopupModel>
+
             <StyledComponent.AllSearchResultsBgContainer>
                 <StyledComponent.TotalSearchResults>
                     {`${
@@ -44,6 +63,7 @@ const AllSearchResults = () => {
                     <AllSearchItem
                         key={uuidv4()}
                         searchItemDetails={eachSearch}
+                        onShareLink={onShareLink}
                     />
                 ))}
             </StyledComponent.AllSearchResultsBgContainer>
@@ -78,8 +98,7 @@ const AllSearchResults = () => {
     };
 
     const renderFailureView = () => {
-        const reloadImageUrl =
-            "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1";
+        const reloadImageUrl = images.reload;
         return (
             <ReloadPage
                 reloadImageUrl={reloadImageUrl}
@@ -90,21 +109,15 @@ const AllSearchResults = () => {
     };
 
     const renderNoResultsFound = () => {
-        const notFoundImageUrl =
-            "https://img.freepik.com/free-vector/flat-design-no-data-illustration_23-2150527142.jpg?w=740&t=st=1695036731~exp=1695037331~hmac=a793ff5dde6918e306e53726059eb01dd5fa0b560067e4e9df6e20a3d4715314";
+        const notFoundImageUrl = images.noResults;
         return <NoResultsFound notFoundImageUrl={notFoundImageUrl} />;
     };
 
     const getData = () => {
-        if (isLoading) {
-            return renderLoaderView();
-        } else if (error) {
-            return renderFailureView();
-        } else if (searchResults.length === 0) {
-            return renderNoResultsFound();
-        } else {
-            return renderResults();
-        }
+        if (isLoading) return renderLoaderView();
+        if (error) return renderFailureView();
+        if (searchResults.length === 0) return renderNoResultsFound();
+        return renderResults();
     };
 
     const fetchData = async () => {
