@@ -1,11 +1,11 @@
 import { useState } from "react";
 import * as StyledComponent from "./styledComponent";
-import { WikipediaContext } from "../../Context";
 import { useNavigate } from "react-router-dom";
 import { useModelState } from "../../modelStateContext";
+import { useWikipediaContext } from "../../wikipediaContext";
 import PopupModel from "../popupModel";
 import Authentication from "../authentication";
-import SearchSuggestion from "../searchSuggestion";
+// import SearchSuggestion from "../searchSuggestion";
 
 const Home = () => {
     // Initialize the React Router navigation hook
@@ -14,6 +14,7 @@ const Home = () => {
     // Define a state variable for the search input and a function to update it
     const [searchInput, onChangeInput] = useState("");
     const { openModel } = useModelState();
+    const { isLightTheme, toggleTheme } = useWikipediaContext();
 
     // Define a function to handle form submission
     const onSubmit = (event) => {
@@ -24,35 +25,28 @@ const Home = () => {
 
     // Define a function to render the options in the home component
     const renderHomeOptions = () => (
-        <WikipediaContext.Consumer>
-            {(value) => {
-                const { toggleTheme, isLightTheme } = value;
-                return (
-                    <StyledComponent.HomeOptionsContainer>
-                        {/* Link to the "History" page */}
-                        <StyledComponent.HomeOptions>
-                            <StyledComponent.StyledLink to="/history">
-                                History
-                            </StyledComponent.StyledLink>
-                        </StyledComponent.HomeOptions>
+        <StyledComponent.HomeOptionsContainer>
+            {/* Link to the "History" page */}
+            <StyledComponent.HomeOptions>
+                <StyledComponent.StyledLink to="/history">
+                    History
+                </StyledComponent.StyledLink>
+            </StyledComponent.HomeOptions>
 
-                        <StyledComponent.HomeOptions title="Login">
-                            <StyledComponent.LoginBtn onClick={openModel}>
-                                Login / Signup
-                            </StyledComponent.LoginBtn>
-                        </StyledComponent.HomeOptions>
-                        {/* Button to toggle between light and dark mode */}
-                        <StyledComponent.HomeOptions onClick={toggleTheme}>
-                            {isLightTheme ? (
-                                <StyledComponent.DarkModeIcon title="Dark Mode" />
-                            ) : (
-                                <StyledComponent.LightModeIcon title="Light Mode" />
-                            )}
-                        </StyledComponent.HomeOptions>
-                    </StyledComponent.HomeOptionsContainer>
-                );
-            }}
-        </WikipediaContext.Consumer>
+            <StyledComponent.HomeOptions title="Login">
+                <StyledComponent.LoginBtn onClick={openModel}>
+                    Login / Signup
+                </StyledComponent.LoginBtn>
+            </StyledComponent.HomeOptions>
+            {/* Button to toggle between light and dark mode */}
+            <StyledComponent.HomeOptions onClick={toggleTheme}>
+                {isLightTheme ? (
+                    <StyledComponent.DarkModeIcon title="Dark Mode" />
+                ) : (
+                    <StyledComponent.LightModeIcon title="Light Mode" />
+                )}
+            </StyledComponent.HomeOptions>
+        </StyledComponent.HomeOptionsContainer>
     );
 
     return (

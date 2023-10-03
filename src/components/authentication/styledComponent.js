@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { PopUpCloseIcon } from "../shareModel/styledComponent";
 
 export const AuthenticationBgContainer = styled.div`
-    /* outline: auto; */
     min-height: 30vh;
     font-weight: 700;
 `;
@@ -23,24 +22,28 @@ export const CloseAuthenticationPopup = styled(PopUpCloseIcon)``;
 export const AuthenticationCard = styled.div`
     background-color: var(--theme-page-bg-color);
     min-height: 20vh;
-    border-radius: 10px;
+    border-radius: 5px;
+    margin-block: 1em;
+    box-shadow: 2px 2px 1px 1px var(--theme-page-bg-color);
 `;
 
 export const AuthenticationCardTabsContainer = styled.ul`
     list-style-type: none;
     padding: 0;
+    margin: 0;
     display: flex;
+    align-items: center;
     & > :nth-child(1) button {
-        border-top-left-radius: 10px;
+        border-top-left-radius: 5px;
     }
 
     & > :nth-child(2) button {
-        border-top-right-radius: 10px;
+        border-top-right-radius: 5px;
     }
 `;
 
 export const AuthenticationCardTabItem = styled.li`
-    width: 50%;
+    width: calc(100% / 2);
 `;
 
 export const AuthenticationTabButton = styled.button`

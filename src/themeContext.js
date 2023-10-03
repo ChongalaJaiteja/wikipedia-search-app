@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import { ThemeProvider } from "styled-components";
+import { useWikipediaContext } from "./wikipediaContext";
 
 const theme = {
     light: {
@@ -36,7 +37,6 @@ const theme = {
     },
 };
 
-// Define common colors used in both themes
 const commonColors = {
     primaryAccentColor: "#007BFF",
     secondaryAccentColor: "#FF4500",
@@ -49,15 +49,17 @@ const ThemeContext = createContext();
 
 export const useThemeProvider = () => useContext(ThemeContext);
 
-const isLightTheme = false;
-const currentTheme = {
-    ...theme[isLightTheme ? "light" : "dark"],
-    ...commonColors,
-    isLightTheme,
-};
+export const ThemeContextProvider = ({ children }) => {
+    const { isLightTheme } = useWikipediaContext();
+    const currentTheme = {
+        ...theme[isLightTheme ? "light" : "dark"],
+        ...commonColors,
+        isLightTheme,
+    };
 
-export const ThemeContextProvider = ({ children }) => (
-    <ThemeContext.Provider>
-        <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
-    </ThemeContext.Provider>
-);
+    return (
+        <ThemeContext.Provider value={""}>
+            <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
+        </ThemeContext.Provider>
+    );
+};

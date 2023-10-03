@@ -16,9 +16,9 @@ export const PopupModel = styled.div`
     /* outline: auto; */
     /* border: 1px solid var(--theme-border-color); */
     padding: 0.9em 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* gap: 1em; */
     /* & > * {
         outline: auto;
     } */

@@ -1,5 +1,7 @@
 import * as StyledComponent from "./styledComponent";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { v4 as uuidv4 } from "uuid";
+import React from "react";
 
 const scrollToTop = () => {
     window.scrollTo({
@@ -12,7 +14,7 @@ const Loader = ({ svgLoader, limit, isImageLayout }) => {
     const loaders = [];
     scrollToTop();
     for (let i = 0; i < limit; i++) {
-        loaders.push(svgLoader);
+        loaders.push(React.cloneElement(svgLoader, { key: uuidv4() }));
     }
     return isImageLayout ? (
         <ResponsiveMasonry

@@ -1,7 +1,7 @@
 import * as StyledComponents from "./styledComponent";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { WikipediaContext } from "../../Context";
+import { useWikipediaContext } from "../../wikipediaContext";
 import SearchOption from "../searchOption";
 import AllSearchResults from "../allSearchResults";
 import ImageSearch from "../imageSearch";
@@ -21,6 +21,7 @@ const Wikipedia = () => {
     const [searchInput, setSearchInput] = useState(searchQuery);
     const [currentSearchOptionId, setSearchOptionId] =
         useState(searchQueryType);
+    const { isLightTheme, toggleTheme } = useWikipediaContext();
 
     const onSubmitSearchInput = (event) => {
         event.preventDefault();
@@ -40,40 +41,28 @@ const Wikipedia = () => {
     }, [query]);
 
     const renderNavBar = () => (
-        <WikipediaContext.Consumer>
-            {(value) => {
-                const { isLightTheme, toggleTheme } = value;
-
-                return (
-                    <StyledComponents.NavBar>
-                        <StyledComponents.StyledLogoLink to="/wikipedia-search-app">
-                            <StyledComponents.WikipediaNavLogo title="wikipedia" />
-                        </StyledComponents.StyledLogoLink>
-                        <StyledComponents.NavSearchFormContainer
-                            onSubmit={onSubmitSearchInput}
-                        >
-                            <StyledComponents.NavSearchInput
-                                type="search"
-                                placeholder="Enter a Keyword"
-                                onChange={(event) =>
-                                    setSearchInput(event.target.value)
-                                }
-                                value={searchInput}
-                            />
-                        </StyledComponents.NavSearchFormContainer>
-                        <StyledComponents.NavBarToggleThemeContainer
-                            onClick={toggleTheme}
-                        >
-                            {isLightTheme ? (
-                                <StyledComponents.NavDarkModeIcon title="dark mode" />
-                            ) : (
-                                <StyledComponents.NavLightModeIcon title="light mode" />
-                            )}
-                        </StyledComponents.NavBarToggleThemeContainer>
-                    </StyledComponents.NavBar>
-                );
-            }}
-        </WikipediaContext.Consumer>
+        <StyledComponents.NavBar>
+            <StyledComponents.StyledLogoLink to="/wikipedia-search-app">
+                <StyledComponents.WikipediaNavLogo title="wikipedia" />
+            </StyledComponents.StyledLogoLink>
+            <StyledComponents.NavSearchFormContainer
+                onSubmit={onSubmitSearchInput}
+            >
+                <StyledComponents.NavSearchInput
+                    type="search"
+                    placeholder="Enter a Keyword"
+                    onChange={(event) => setSearchInput(event.target.value)}
+                    value={searchInput}
+                />
+            </StyledComponents.NavSearchFormContainer>
+            <StyledComponents.NavBarToggleThemeContainer onClick={toggleTheme}>
+                {isLightTheme ? (
+                    <StyledComponents.NavDarkModeIcon title="dark mode" />
+                ) : (
+                    <StyledComponents.NavLightModeIcon title="light mode" />
+                )}
+            </StyledComponents.NavBarToggleThemeContainer>
+        </StyledComponents.NavBar>
     );
 
     const RenderSearchResults = () => {

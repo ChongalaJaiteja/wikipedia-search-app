@@ -4,7 +4,6 @@ import { AiOutlineClose } from "react-icons/ai";
 export const SharePopupHeaderContainer = styled.div`
     display: flex;
     align-items: center;
-    /* outline: auto; */
     justify-content: space-between;
 `;
 export const MainHeading = styled.h1`
