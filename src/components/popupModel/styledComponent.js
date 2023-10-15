@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { Toaster } from "react-hot-toast";
 
 export const PopupBgContainer = styled.div`
     position: fixed;
@@ -6,20 +7,29 @@ export const PopupBgContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999999;
+    z-index: 999999;
+    min-height: 100vh;
+    overflow: auto;
 `;
 
+const AnimatePopup = keyframes`
+    from {
+        transform: scale(0);
+    } 
+    
+    to {
+        transform: scale(1);
+    }
+`;
 export const PopupModel = styled.div`
     background-color: var(--theme-container-bg-color);
+    color: var(--theme-primary-text-color);
     border-radius: 15px;
     width: min(85%, 30rem);
-    /* outline: auto; */
-    /* border: 1px solid var(--theme-border-color); */
+    animation: ${AnimatePopup} 0.16s linear;
     padding: 0.9em 1em;
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* gap: 1em; */
-    /* & > * {
-        outline: auto;
-    } */
+    margin-bottom: 2em;
+    margin-top: 5rem;
 `;
+
+export const StyledToaster = styled(Toaster)``;

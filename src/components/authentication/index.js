@@ -25,7 +25,10 @@ const Authentication = () => {
         <StyleComponent.AuthenticationBgContainer>
             <StyleComponent.AuthenticationHeader>
                 <StyleComponent.AuthenticationMessage>
-                    Please Login To Continue
+                    Please{" "}
+                    {currentTab[0].toUpperCase() +
+                        currentTab.slice(1).toLocaleLowerCase()}{" "}
+                    To Continue
                 </StyleComponent.AuthenticationMessage>
                 <StyleComponent.CloseAuthenticationPopup onClick={closeModel} />
             </StyleComponent.AuthenticationHeader>

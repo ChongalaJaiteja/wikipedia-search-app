@@ -81,7 +81,7 @@ const ImageSearch = () => {
                     };
                 }
             );
-
+            
             setImageUrls(uniqueImagesArray);
         } catch (error) {
             setError(true);

@@ -50,33 +50,37 @@ const Home = () => {
     );
 
     return (
-        <StyledComponent.HomeBgContainer>
-            {/* Render the home options */}
+        <>
             <PopupModel>
                 <Authentication />
             </PopupModel>
-            {renderHomeOptions()}
-            <StyledComponent.SearchBgContainer>
-                <StyledComponent.WikipediaImage
-                    src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
-                    alt="wikipedia-img"
-                />
-                <StyledComponent.SearchFormContainer onSubmit={onSubmit}>
-                    {/* Input field for searching */}
-                    <StyledComponent.SearchInput
-                        type="search"
-                        placeholder="Enter a Keyword"
-                        onChange={(event) => onChangeInput(event.target.value)}
-                        value={searchInput}
-                        autoFocus={true}
+            <StyledComponent.HomeBgContainer>
+                {/* Render the home options */}
+                {renderHomeOptions()}
+                <StyledComponent.SearchBgContainer>
+                    <StyledComponent.WikipediaImage
+                        src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
+                        alt="wikipedia-img"
                     />
-                    {/* Uncomment the following lines to display search suggestions */}
-                    {/* {searchInput && (
+                    <StyledComponent.SearchFormContainer onSubmit={onSubmit}>
+                        {/* Input field for searching */}
+                        <StyledComponent.SearchInput
+                            type="search"
+                            placeholder="Enter a Keyword"
+                            onChange={(event) =>
+                                onChangeInput(event.target.value)
+                            }
+                            value={searchInput}
+                            autoFocus={true}
+                        />
+                        {/* Uncomment the following lines to display search suggestions */}
+                        {/* {searchInput && (
                         <SearchSuggestion searchInput={searchInput} />
                     )} */}
-                </StyledComponent.SearchFormContainer>
-            </StyledComponent.SearchBgContainer>
-        </StyledComponent.HomeBgContainer>
+                    </StyledComponent.SearchFormContainer>
+                </StyledComponent.SearchBgContainer>
+            </StyledComponent.HomeBgContainer>
+        </>
     );
 };
 export default Home;

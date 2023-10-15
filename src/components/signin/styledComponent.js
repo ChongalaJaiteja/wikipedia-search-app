@@ -1,15 +1,23 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FaUser } from "react-icons/fa6";
-import { BiSolidLockAlt } from "react-icons/bi";
+import { BiSolidLockAlt, BiSolidShow, BiSolidHide } from "react-icons/bi";
 
 export const SignInFormContainer = styled.form`
-    /* outline: auto; */
     display: flex;
     flex-direction: column;
     padding: 0.6em 1em;
 `;
 
-export const UserNameInputContainer = styled.div`
+export const SigninInputFieldListContainer = styled.ul`
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+`;
+
+export const SignInInputFieldItem = styled.li``;
+
+export const SignInInputFieldContainer = styled.div`
     background-color: var(--theme-input-bg-color);
     display: flex;
     gap: 0.3em;
@@ -23,11 +31,12 @@ export const UserNameInputContainer = styled.div`
     }
 `;
 export const UserIcon = styled(FaUser)`
-    font-size: clamp(0.1em, 1vw + 0.54em, 0.9em);
+    font-size: clamp(0.1rem, 1vw + 0.54rem, 0.9rem);
     padding: 0.3em;
     border-radius: 100%;
 `;
-export const UsernameOrMailInput = styled.input`
+
+export const SignInInputField = styled.input`
     flex-grow: 1;
     color: var(--theme-input-text-color);
     background-color: var(--theme-input-bg-color);
@@ -39,30 +48,42 @@ export const UsernameOrMailInput = styled.input`
     }
 `;
 
-export const UsernameInputError = styled.span`
+export const SignInInputError = styled.span`
     color: #d83f31;
     margin-top: 0.2em;
-    font-size: clamp(0.2em, 1vw + 0.42em, 0.77em);
-`;
-
-export const UserPasswordInputContainer = styled(UserNameInputContainer)`
-    margin-top: 1.4em;
-    gap: 0.6em;
+    font-size: clamp(0.2rem, 1vw + 0.42rem, 0.77rem);
 `;
 
 export const PasswordIcon = styled(BiSolidLockAlt)`
-    font-size: clamp(0.1em, 1vw + 0.8em, 1em);
+    font-size: clamp(0.1rem, 1vw + 0.8rem, 1rem);
     border-radius: 100%;
 `;
 
-export const PasswordInput = styled(UsernameOrMailInput)``;
+export const ToggleSigninPasswordContainer = styled.div`
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+`;
 
-export const PasswordInputError = styled(UsernameInputError)``;
+const PasswordIcons = css`
+    font-size: clamp(0.1rem, 1vw + 0.96rem, 1.3rem);
+`;
+export const PasswordShowIcon = styled(BiSolidShow)`
+    ${PasswordIcons}
+`;
+
+export const HidePasswordIcon = styled(BiSolidHide)`
+    ${PasswordIcons}
+`;
 
 export const SignInBtn = styled.button`
-    background-color: var(--theme-success-color);
+    background-color: var(--theme-primary-color);
     color: white;
     border: none;
+    width: 100%;
     cursor: pointer;
     margin-block: 2.6em 0.6em;
     padding-block: 0.8em;

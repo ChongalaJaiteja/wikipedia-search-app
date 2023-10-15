@@ -21,7 +21,6 @@ export const CloseAuthenticationPopup = styled(PopUpCloseIcon)``;
 
 export const AuthenticationCard = styled.div`
     background-color: var(--theme-page-bg-color);
-    min-height: 20vh;
     border-radius: 5px;
     margin-block: 1em;
     box-shadow: 2px 2px 1px 1px var(--theme-page-bg-color);
