@@ -1,4 +1,6 @@
 import * as StyledComponent from "./styledComponent";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 const AllSearchItem = ({ searchItemDetails, onShareLink }) => {
     const { title, pageid, snippet } = searchItemDetails;
@@ -17,7 +19,11 @@ const AllSearchItem = ({ searchItemDetails, onShareLink }) => {
                     <StyledComponent.ShareIconContainer
                         onClick={() => onShareLink(link)}
                     >
-                        <StyledComponent.ShareIcon />
+                        <Tooltip title="Share">
+                            <IconButton>
+                                <StyledComponent.ShareIcon />
+                            </IconButton>
+                        </Tooltip>
                         <StyledComponent.ShareText>
                             Share
                         </StyledComponent.ShareText>

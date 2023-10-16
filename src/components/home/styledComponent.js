@@ -14,7 +14,6 @@ export const HomeBgContainer = styled.div`
     min-height: 100vh;
     padding-inline: 0.6em;
     ${theme};
-    /* justify-content: center; */
     @media (min-width: 574px) {
         & {
             padding-inline: 1em;
@@ -105,7 +104,7 @@ export const LightModeIcon = styled(BsFillSunFill)`
 `;
 export const SearchBgContainer = styled.div`
     align-self: center;
-    margin-block: 6em 0em;
+    margin-block: 3.4em 6.5em;
     width: 100%;
     max-width: 35rem;
     display: flex;

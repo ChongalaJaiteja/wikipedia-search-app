@@ -5,6 +5,8 @@ import { useWikipediaContext } from "../../wikipediaContext";
 import SearchOption from "../searchOption";
 import AllSearchResults from "../allSearchResults";
 import ImageSearch from "../imageSearch";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 const searchOptionsList = [
     { id: "ALL", option: "All" },
@@ -57,9 +59,17 @@ const Wikipedia = () => {
             </StyledComponents.NavSearchFormContainer>
             <StyledComponents.NavBarToggleThemeContainer onClick={toggleTheme}>
                 {isLightTheme ? (
-                    <StyledComponents.NavDarkModeIcon title="dark mode" />
+                    <Tooltip title="dark mode">
+                        <IconButton>
+                            <StyledComponents.NavDarkModeIcon />
+                        </IconButton>
+                    </Tooltip>
                 ) : (
-                    <StyledComponents.NavLightModeIcon title="light mode" />
+                    <Tooltip title="light mode">
+                        <IconButton>
+                            <StyledComponents.NavLightModeIcon />
+                        </IconButton>
+                    </Tooltip>
                 )}
             </StyledComponents.NavBarToggleThemeContainer>
         </StyledComponents.NavBar>

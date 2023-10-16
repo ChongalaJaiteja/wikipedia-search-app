@@ -7,6 +7,7 @@ import {
     UserIcon,
     PasswordIcon,
     ToggleSigninPasswordContainer,
+    SignInBtnText,
 } from "../signin/styledComponent";
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
 import { MdEmail } from "react-icons/md";
@@ -57,3 +58,5 @@ export const HidePasswordIcon = styled(BiSolidHide)`
 `;
 
 export const SignupBtn = styled(SignInBtn)``;
+
+export const SignupBtnText = styled(SignInBtnText)``;

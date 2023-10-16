@@ -29,6 +29,7 @@ export const ShareIconContainer = styled.div`
 export const ShareIcon = styled(PiShareFat)`
     cursor: pointer;
     font-size: clamp(1rem, 1vw + 1rem, 1.4rem);
+    color: var(--theme-primary-text-color);
     &:hover {
         color: var(--theme-primary-color);
     }

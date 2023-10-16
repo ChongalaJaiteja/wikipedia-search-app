@@ -2,6 +2,8 @@
 import React, { useReducer } from "react";
 import * as StyledComponent from "./styledComponent";
 import toast from "react-hot-toast";
+import ClipLoader from "react-spinners/ClipLoader";
+import { useModelState } from "../../modelStateContext";
 
 const INPUT_FIELD_NAMES = {
     USERNAME: "username",
@@ -25,6 +27,7 @@ const initialState = {
         userPassword: false,
         userConfirmPassword: false,
     },
+    isSignupLoading: false,
 };
 
 const ACTIONS = {
@@ -32,6 +35,7 @@ const ACTIONS = {
     SET_FORM_ERROR: "set-form-error",
     SET_SHOW_PASSWORD: "set-show-password",
     RESET_FORM: "reset-form",
+    SET_SIGNUP_LOADING: "set-signup-loading",
 };
 
 const ERROR_MESSAGE = {
@@ -70,6 +74,8 @@ const reducer = (state, action) => {
                 },
             };
 
+        case ACTIONS.SET_SIGNUP_LOADING:
+            return { ...state, isSignupLoading: action.payload };
         case ACTIONS.RESET_FORM:
             return initialState;
 
@@ -80,6 +86,7 @@ const reducer = (state, action) => {
 
 const Signup = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const { showModel, closeModel } = useModelState();
 
     const {
         username,
@@ -88,6 +95,7 @@ const Signup = () => {
         showPassword,
         userEmail,
         userConfirmPassword,
+        isSignupLoading,
     } = state;
 
     const {
@@ -162,22 +170,11 @@ const Signup = () => {
             });
             isFormValid = false;
         }
-
-        // console.log("Start");
-        // console.log("username", username);
-        // console.log(isUsernameValid);
-        // console.log("userPassword", userPassword);
-        // console.log(isUserPasswordValid);
-        // console.log("userEmail", userEmail);
-        // console.log(isUserEmailValid);
-
-        // if (!isFormValid)
-        //     toast.error("Invalid login credentials", { duration: 1600 });
-
         return isFormValid;
     };
 
     const verifyUser = async (username, email, password) => {
+        dispatch({ type: ACTIONS.SET_SIGNUP_LOADING, payload: true });
         try {
             const url = "http://localhost:3001/register/";
             const options = {
@@ -196,11 +193,14 @@ const Signup = () => {
             if (response.ok) {
                 toast.success(responseText);
                 dispatch({ type: ACTIONS.RESET_FORM });
+                closeModel();
             } else {
                 toast.error(responseText);
             }
         } catch (error) {
             toast.error("Server Error");
+        } finally {
+            dispatch({ type: ACTIONS.SET_SIGNUP_LOADING, payload: false });
         }
     };
 
@@ -239,10 +239,6 @@ const Signup = () => {
                 submittedUserEmail,
                 submittedUserPassword
             );
-            // console.log("email", submittedUserEmail);
-            // console.log("username", submittedUsername);
-            // console.log("password", submittedUserPassword);
-            // console.log("confirm password", submittedConfirmPassword);
         }
     };
 
@@ -381,8 +377,20 @@ const Signup = () => {
                     )
                 )}
                 <StyledComponent.SignupInInputFieldItem>
-                    <StyledComponent.SignupBtn type="submit">
-                        Sign Up
+                    <StyledComponent.SignupBtn
+                        type="submit"
+                        disabled={isSignupLoading}
+                        isFormLoading={isSignupLoading}
+                    >
+                        <StyledComponent.SignupBtnText>
+                            Sign Up
+                        </StyledComponent.SignupBtnText>
+                        {isSignupLoading && (
+                            <ClipLoader
+                                color="rgba(169, 180, 177, 1)"
+                                size={11}
+                            />
+                        )}
                     </StyledComponent.SignupBtn>
                 </StyledComponent.SignupInInputFieldItem>
             </StyledComponent.SignupInputFieldListContainer>

@@ -1,5 +1,4 @@
 import styled, { keyframes } from "styled-components";
-import { Toaster } from "react-hot-toast";
 
 export const PopupBgContainer = styled.div`
     position: fixed;
@@ -32,4 +31,3 @@ export const PopupModel = styled.div`
     margin-top: 5rem;
 `;
 
-export const StyledToaster = styled(Toaster)``;

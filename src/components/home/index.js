@@ -5,6 +5,9 @@ import { useModelState } from "../../modelStateContext";
 import { useWikipediaContext } from "../../wikipediaContext";
 import PopupModel from "../popupModel";
 import Authentication from "../authentication";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+
 // import SearchSuggestion from "../searchSuggestion";
 
 const Home = () => {
@@ -33,17 +36,29 @@ const Home = () => {
                 </StyledComponent.StyledLink>
             </StyledComponent.HomeOptions>
 
-            <StyledComponent.HomeOptions title="Login">
-                <StyledComponent.LoginBtn onClick={openModel}>
-                    Login / Signup
-                </StyledComponent.LoginBtn>
+            <StyledComponent.HomeOptions>
+                <Tooltip title="Login / Signup">
+                    <IconButton>
+                        <StyledComponent.LoginBtn onClick={openModel}>
+                            Login / Signup
+                        </StyledComponent.LoginBtn>
+                    </IconButton>
+                </Tooltip>
             </StyledComponent.HomeOptions>
             {/* Button to toggle between light and dark mode */}
             <StyledComponent.HomeOptions onClick={toggleTheme}>
                 {isLightTheme ? (
-                    <StyledComponent.DarkModeIcon title="Dark Mode" />
+                    <Tooltip title="Dark Mode">
+                        <IconButton>
+                            <StyledComponent.DarkModeIcon />
+                        </IconButton>
+                    </Tooltip>
                 ) : (
-                    <StyledComponent.LightModeIcon title="Light Mode" />
+                    <Tooltip title="Light Mode">
+                        <IconButton>
+                            <StyledComponent.LightModeIcon />
+                        </IconButton>
+                    </Tooltip>
                 )}
             </StyledComponent.HomeOptions>
         </StyledComponent.HomeOptionsContainer>

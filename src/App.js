@@ -2,6 +2,8 @@
 import Wikipedia from "./components/wikipedia";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
+import History from "./components/history";
+import ProtectedRoute from "./components/protectedRoute";
 import { GlobalStyles } from "./globalStyles";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ModelStateProvider } from "./modelStateContext";
@@ -20,7 +22,14 @@ const App = () => (
                             element={<Home />}
                         />
                         <Route path="/wikipedia" element={<Wikipedia />} />
-                        <Route path="/history" />
+                        <Route
+                            path="/history"
+                            element={
+                                <ProtectedRoute>
+                                    <History />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>

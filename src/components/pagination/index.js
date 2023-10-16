@@ -1,4 +1,6 @@
 import * as StyledComponent from "./styledComponent";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 const Pagination = ({
     currentPage,
@@ -41,27 +43,34 @@ const Pagination = ({
 
     return (
         <StyledComponent.PaginationContainerSm>
-            {currentPage >= 2 && (
-                <StyledComponent.NavigateToFirstPageTextContainer
-                    onClick={navigateToFirstPage}
-                >
-                    <StyledComponent.FirstPageNavigationIcon />
-                    <StyledComponent.NavigateToFirstPageText>
-                        Go to page 1
-                    </StyledComponent.NavigateToFirstPageText>
-                </StyledComponent.NavigateToFirstPageTextContainer>
+            {currentPage > 2 && (
+                <Tooltip title="Go to page 1">
+                    <IconButton>
+                        <StyledComponent.NavigateToFirstPageTextContainer
+                            onClick={navigateToFirstPage}
+                        >
+                            <StyledComponent.FirstPageNavigationIcon />
+                            <StyledComponent.NavigateToFirstPageText>
+                                Go to page 1
+                            </StyledComponent.NavigateToFirstPageText>
+                        </StyledComponent.NavigateToFirstPageTextContainer>
+                    </IconButton>
+                </Tooltip>
             )}
 
             <StyledComponent.PageNavigationContainer>
                 {currentPage > 2 && (
                     <StyledComponent.NavigateToFirstPageBgContainer>
-                        <StyledComponent.PaginationBtn
-                            outline={true}
-                            onClick={navigateToFirstPage}
-                            title="Go to page 1"
-                        >
-                            <StyledComponent.FirstPageNavigationIcon />
-                        </StyledComponent.PaginationBtn>
+                        <Tooltip title="Go to page 1">
+                            <IconButton>
+                                <StyledComponent.PaginationBtn
+                                    outline={true}
+                                    onClick={navigateToFirstPage}
+                                >
+                                    <StyledComponent.FirstPageNavigationIcon />
+                                </StyledComponent.PaginationBtn>
+                            </IconButton>
+                        </Tooltip>
                         {/* <StyledComponent.NavigateToFirstPageTextContainer
                                 onClick={navigateToFirstPage}
                             >
@@ -77,24 +86,33 @@ const Pagination = ({
                     </StyledComponent.NavigateToFirstPageBgContainer>
                 )}
                 {currentPage > 1 && (
-                    <StyledComponent.PaginationBtn
-                        outline={true}
-                        onClick={handlePreviousPage}
-                        title="Previous Page"
-                    >
-                        <StyledComponent.LeftPaginationIcon />
-                    </StyledComponent.PaginationBtn>
+                    <Tooltip title="Previous Page">
+                        <IconButton>
+                            <StyledComponent.PaginationBtn
+                                outline={true}
+                                onClick={handlePreviousPage}
+                            >
+                                <StyledComponent.LeftPaginationIcon />
+                            </StyledComponent.PaginationBtn>
+                        </IconButton>
+                    </Tooltip>
                 )}
-                <StyledComponent.PaginationBtn
-                    onClick={handleNextPage}
-                    title="Next Page"
-                    disabled={currentPage === Math.ceil(totalResults / limit)}
-                >
-                    <StyledComponent.PaginationBtnContent>
-                        Next Page
-                    </StyledComponent.PaginationBtnContent>
-                    <StyledComponent.RightPaginationIcon />
-                </StyledComponent.PaginationBtn>
+                <Tooltip title="Next Page">
+                    <IconButton>
+                        <StyledComponent.PaginationBtn
+                            onClick={handleNextPage}
+                            // title="Next Page"
+                            disabled={
+                                currentPage === Math.ceil(totalResults / limit)
+                            }
+                        >
+                            <StyledComponent.PaginationBtnContent>
+                                Next Page
+                            </StyledComponent.PaginationBtnContent>
+                            <StyledComponent.RightPaginationIcon />
+                        </StyledComponent.PaginationBtn>
+                    </IconButton>
+                </Tooltip>
             </StyledComponent.PageNavigationContainer>
 
             <StyledComponent.PageNumberDetails>

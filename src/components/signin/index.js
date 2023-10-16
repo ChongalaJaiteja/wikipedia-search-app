@@ -3,6 +3,22 @@ import { useReducer } from "react";
 import Cookies from "js-cookies";
 import * as StyledComponent from "./styledComponent";
 import toast from "react-hot-toast";
+import ClipLoader from "react-spinners/ClipLoader";
+import { useModelState } from "../../modelStateContext";
+
+const ACTIONS = {
+    SET_FIELD: "set-user-fields",
+    SET_FORM_ERROR: "set-form-error",
+    SET_SHOW_PASSWORD: "set-show-password",
+    RESET_FORM: "reset-form",
+    SET_SIGNIN_LOADING: "set-signin-loading",
+    SET_REMEMBER_USER: "set-remember-user",
+};
+
+const INPUT_FIELD_NAMES = {
+    USERNAME_OR_EMAIL: "usernameOrEmail",
+    USER_PASSWORD: "userPassword",
+};
 
 const initialState = {
     usernameOrEmail: "",
@@ -12,18 +28,8 @@ const initialState = {
         userPassword: false,
     },
     showPassword: false,
-};
-
-const ACTIONS = {
-    SET_FIELD: "set-user-fields",
-    SET_FORM_ERROR: "set-form-error",
-    SET_SHOW_PASSWORD: "set-show-password",
-    RESET_FORM: "reset-form",
-};
-
-const INPUT_FIELD_NAMES = {
-    USERNAME_OR_EMAIL: "usernameOrEmail",
-    USER_PASSWORD: "userPassword",
+    isSigninLoading: false,
+    rememberUser: false,
 };
 
 const reducer = (state, action) => {
@@ -46,6 +52,11 @@ const reducer = (state, action) => {
                 },
             };
 
+        case ACTIONS.SET_SIGNIN_LOADING:
+            return { ...state, isSigninLoading: action.payload };
+        case ACTIONS.SET_REMEMBER_USER:
+            return { ...state, rememberUser: action.payload };
+
         case ACTIONS.RESET_FORM:
             return initialState;
 
@@ -56,8 +67,16 @@ const reducer = (state, action) => {
 
 const SignIn = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const { showModel, closeModel } = useModelState();
 
-    const { usernameOrEmail, userPassword, formError, showPassword } = state;
+    const {
+        usernameOrEmail,
+        userPassword,
+        formError,
+        showPassword,
+        isSigninLoading,
+        rememberUser,
+    } = state;
 
     const {
         usernameOrEmail: usernameOrEmailError,
@@ -65,6 +84,7 @@ const SignIn = () => {
     } = formError;
 
     const verifyUser = async (username_or_email, password, is_username) => {
+        dispatch({ type: ACTIONS.SET_SIGNIN_LOADING, payload: true });
         try {
             const url = "http://localhost:3001/login/";
             const options = {
@@ -83,14 +103,20 @@ const SignIn = () => {
 
             if (response.ok) {
                 toast.success("Login Successfully");
-                const { jwt_token: jwtToken } = response;
-                Cookies.setItem("jwt_token", jwtToken, { expires: 30 });
+                if (rememberUser) {
+                    const { jwt_token } = JSON.parse(responseText);
+                    Cookies.setItem("jwt_token", jwt_token, { expires: 30 });
+                }
                 dispatch({ type: ACTIONS.RESET_FORM });
+                closeModel();
             } else {
                 toast.error(responseText);
             }
         } catch (error) {
+            console.log(error);
             toast.error("Server Error");
+        } finally {
+            dispatch({ type: ACTIONS.SET_SIGNIN_LOADING, payload: false });
         }
     };
 
@@ -184,70 +210,99 @@ const SignIn = () => {
         },
     ];
     return (
-        <StyledComponent.SignInFormContainer onSubmit={handleSubmit}>
-            <StyledComponent.SigninInputFieldListContainer>
-                {formFields.map(
-                    ({
-                        name,
-                        icon,
-                        placeholder,
-                        type,
-                        error,
-                        showPassword,
-                    }) => (
-                        <StyledComponent.SignInInputFieldItem>
-                            <StyledComponent.SignInInputFieldContainer>
-                                {icon}
-                                <StyledComponent.SignInInputField
-                                    type={type}
-                                    name={name}
-                                    value={state[name]}
-                                    placeholder={placeholder}
-                                    onBlur={handelBlurInput}
-                                    onChange={handelInputChange}
-                                    onPaste={(event) =>
-                                        (name
-                                            .toLowerCase()
-                                            .includes("password") ||
-                                            type === "password") &&
-                                        event.preventDefault()
-                                    }
-                                    onCopy={(event) =>
-                                        (name
-                                            .toLocaleLowerCase()
-                                            .includes("password") ||
-                                            type === "password") &&
-                                        event.preventDefault()
-                                    }
+        <>
+            <StyledComponent.SignInFormContainer onSubmit={handleSubmit}>
+                <StyledComponent.SigninInputFieldListContainer>
+                    {formFields.map(
+                        ({
+                            name,
+                            icon,
+                            placeholder,
+                            type,
+                            error,
+                            showPassword,
+                        }) => (
+                            <StyledComponent.SignInInputFieldItem>
+                                <StyledComponent.SignInInputFieldContainer>
+                                    {icon}
+                                    <StyledComponent.SignInInputField
+                                        type={type}
+                                        name={name}
+                                        value={state[name]}
+                                        placeholder={placeholder}
+                                        onBlur={handelBlurInput}
+                                        onChange={handelInputChange}
+                                        onPaste={(event) =>
+                                            (name
+                                                .toLowerCase()
+                                                .includes("password") ||
+                                                type === "password") &&
+                                            event.preventDefault()
+                                        }
+                                        onCopy={(event) =>
+                                            (name
+                                                .toLocaleLowerCase()
+                                                .includes("password") ||
+                                                type === "password") &&
+                                            event.preventDefault()
+                                        }
+                                    />
+                                    {name.toLowerCase().includes("password") &&
+                                        state[name].trim() !== "" && (
+                                            <StyledComponent.ToggleSigninPasswordContainer
+                                                onClick={toggleShowPassword}
+                                            >
+                                                {showPassword ? (
+                                                    <StyledComponent.HidePasswordIcon title="Hide Password" />
+                                                ) : (
+                                                    <StyledComponent.PasswordShowIcon title="Show Password" />
+                                                )}
+                                            </StyledComponent.ToggleSigninPasswordContainer>
+                                        )}
+                                </StyledComponent.SignInInputFieldContainer>
+                                {error && (
+                                    <StyledComponent.SignInInputError>
+                                        Field can not be empty.
+                                    </StyledComponent.SignInInputError>
+                                )}
+                            </StyledComponent.SignInInputFieldItem>
+                        )
+                    )}
+                    <StyledComponent.SignInInputFieldItem>
+                        <StyledComponent.RememberUserInput
+                            id="rememberMe"
+                            type="checkbox"
+                            onChange={(event) =>
+                                dispatch({
+                                    type: ACTIONS.SET_REMEMBER_USER,
+                                    payload: event.target.checked,
+                                })
+                            }
+                        />
+                        <StyledComponent.RememberUserInputLabel htmlFor="rememberMe">
+                            Remember me
+                        </StyledComponent.RememberUserInputLabel>
+                    </StyledComponent.SignInInputFieldItem>
+                    <StyledComponent.SignInInputFieldItem>
+                        <StyledComponent.SignInBtn
+                            type="submit"
+                            disabled={isSigninLoading}
+                            isFormLoading={isSigninLoading}
+                        >
+                            <StyledComponent.SignInBtnText>
+                                Sign In
+                            </StyledComponent.SignInBtnText>
+                            {isSigninLoading && (
+                                <ClipLoader
+                                    color="rgba(169, 180, 177, 1)"
+                                    size={11}
                                 />
-                                {name.toLowerCase().includes("password") &&
-                                    state[name].trim() !== "" && (
-                                        <StyledComponent.ToggleSigninPasswordContainer
-                                            onClick={toggleShowPassword}
-                                        >
-                                            {showPassword ? (
-                                                <StyledComponent.HidePasswordIcon title="Hide Password" />
-                                            ) : (
-                                                <StyledComponent.PasswordShowIcon title="Show Password" />
-                                            )}
-                                        </StyledComponent.ToggleSigninPasswordContainer>
-                                    )}
-                            </StyledComponent.SignInInputFieldContainer>
-                            {error && (
-                                <StyledComponent.SignInInputError>
-                                    Field can not be empty.
-                                </StyledComponent.SignInInputError>
                             )}
-                        </StyledComponent.SignInInputFieldItem>
-                    )
-                )}
-                <StyledComponent.SignInInputFieldItem>
-                    <StyledComponent.SignInBtn type="submit">
-                        Sign In
-                    </StyledComponent.SignInBtn>
-                </StyledComponent.SignInInputFieldItem>
-            </StyledComponent.SigninInputFieldListContainer>
-        </StyledComponent.SignInFormContainer>
+                        </StyledComponent.SignInBtn>
+                    </StyledComponent.SignInInputFieldItem>
+                </StyledComponent.SigninInputFieldListContainer>
+            </StyledComponent.SignInFormContainer>
+        </>
     );
 };
 

@@ -81,7 +81,7 @@ const ImageSearch = () => {
                     };
                 }
             );
-            
+
             setImageUrls(uniqueImagesArray);
         } catch (error) {
             setError(true);
@@ -145,7 +145,10 @@ const ImageSearch = () => {
                                 rel="noreferrer"
                                 key={uuidv4()}
                             >
-                                <StyledComponent.ImageCard key={uuidv4()}>
+                                <StyledComponent.ImageCard
+                                    key={uuidv4()}
+                                    title={eachImageCard.title}
+                                >
                                     <StyledComponent.WikipediaImage
                                         src={eachImageCard.url}
                                         alt={eachImageCard.title}
@@ -156,7 +159,6 @@ const ImageSearch = () => {
                                             href={`https://en.wikipedia.org/wiki/${eachImageCard.wikipediaTitle}`}
                                             target="_blank"
                                             rel="noreferrer"
-                                            title={eachImageCard.title}
                                         >
                                             <StyledComponent.ImageCardTitle>
                                                 {eachImageCard.title}

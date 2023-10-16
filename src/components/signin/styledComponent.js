@@ -13,6 +13,13 @@ export const SigninInputFieldListContainer = styled.ul`
     display: flex;
     flex-direction: column;
     padding: 0;
+
+    & > li:nth-last-child(2) {
+        display: flex;
+        align-items: center;
+        gap: 0.22em;
+        margin-top: 0.88em;
+    }
 `;
 
 export const SignInInputFieldItem = styled.li``;
@@ -79,9 +86,22 @@ export const HidePasswordIcon = styled(BiSolidHide)`
     ${PasswordIcons}
 `;
 
+export const RememberUserInput = styled.input`
+    width: clamp(0.24rem, 1vw + 0.45rem, 1rem);
+`;
+
+export const RememberUserInputLabel = styled.label`
+    font-size: clamp(0.3rem, 1vw + 0.6rem, 0.86rem);
+`;
+
 export const SignInBtn = styled.button`
-    background-color: var(--theme-primary-color);
+    background-color: ${(props) =>
+        props.isFormLoading ? "#73777B" : "var(--theme-primary-color)"};
     color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    justify-content: center;
     border: none;
     width: 100%;
     cursor: pointer;
@@ -89,3 +109,5 @@ export const SignInBtn = styled.button`
     padding-block: 0.8em;
     border-radius: 5px;
 `;
+
+export const SignInBtnText = styled.span``;
