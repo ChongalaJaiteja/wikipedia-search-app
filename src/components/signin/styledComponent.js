@@ -13,7 +13,6 @@ export const SigninInputFieldListContainer = styled.ul`
     display: flex;
     flex-direction: column;
     padding: 0;
-
     & > li:nth-last-child(2) {
         display: flex;
         align-items: center;
@@ -29,6 +28,7 @@ export const SignInInputFieldContainer = styled.div`
     display: flex;
     gap: 0.3em;
     margin-top: 1.3em;
+    width: 100%;
     border: 1px solid var(--theme-input-border-color);
     border-radius: 5px;
     padding: 0.34em 0.3em;
@@ -96,7 +96,7 @@ export const RememberUserInputLabel = styled.label`
 
 export const SignInBtn = styled.button`
     background-color: ${(props) =>
-        props.isFormLoading ? "#73777B" : "var(--theme-primary-color)"};
+        props.isformloading ? "#73777B" : "var(--theme-primary-color)"};
     color: white;
     display: flex;
     align-items: center;

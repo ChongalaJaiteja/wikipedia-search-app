@@ -26,10 +26,11 @@ export const HomeOptionsContainer = styled.ul`
     list-style: none;
     padding: 0;
     margin-top: 1.5em;
-    padding-inline: 1em;
+    padding-inline: clamp(0.3em, 1vw + 1em, 0.2em);
     display: flex;
     align-items: center;
-    gap: 1.5em;
+    gap: 1em;
+    position: relative;
     & > li {
         cursor: pointer;
     }
@@ -78,7 +79,7 @@ export const LoginBtn = styled.button`
     color: white;
     font-size: clamp(0.6rem, 1vw + 0.65rem, 1rem);
     padding: 0.3em clamp(0.2em, 1vw + 1em, 1em);
-    border-radius: 11px;
+    border-radius: 9px;
     cursor: pointer;
 `;
 
@@ -93,6 +94,7 @@ to {
 export const DarkModeIcon = styled(BsMoonFill)`
     font-size: var(--fs-theme-mode-logo);
     cursor: pointer;
+    color: #272826;
     animation: ${RotateThemeIcon} 0.3s linear forwards;
 `;
 export const LightModeIcon = styled(BsFillSunFill)`
@@ -128,7 +130,6 @@ export const SearchInput = styled.input`
     color: var(--theme-input-text-color);
     padding: 0.75em 0.7em;
     outline: none;
-
     &::placeholder {
         color: var(--theme-input-placeholder-text-color);
     }

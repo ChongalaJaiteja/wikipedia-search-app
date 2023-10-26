@@ -9,7 +9,7 @@ export const AllSearchResultsBgContainer = styled.ul`
     margin-bottom: clamp(1em, 1vw + 1.4em, 6em);
     display: flex;
     flex-direction: column;
-    gap: 1.6em;
+    gap: 2em;
     padding: 0 1em;
     position: relative;
     @media (min-width: 690px) {

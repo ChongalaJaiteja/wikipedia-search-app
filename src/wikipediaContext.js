@@ -1,5 +1,3 @@
-import Cookies from "js-cookies";
-
 import { createContext, useContext, useState } from "react";
 
 export const WikipediaContext = createContext();
@@ -15,8 +13,6 @@ export const WikipediaProvider = ({ children }) => {
             return true;
         }
     });
-
-    const isLoggedIn = Cookies.getItem("jwt_token") !== null;
     const toggleTheme = () => {
         localStorage.setItem("lightMode", !isLightTheme);
         setIsLightTheme((prevState) => !prevState);
@@ -24,7 +20,10 @@ export const WikipediaProvider = ({ children }) => {
 
     return (
         <WikipediaContext.Provider
-            value={{ isLightTheme, toggleTheme, isLoggedIn }}
+            value={{
+                isLightTheme,
+                toggleTheme,
+            }}
         >
             {children}
         </WikipediaContext.Provider>

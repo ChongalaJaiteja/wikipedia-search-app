@@ -1,10 +1,10 @@
 /* eslint-disable no-useless-escape */
 import { useReducer } from "react";
-import Cookies from "js-cookies";
 import * as StyledComponent from "./styledComponent";
 import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useModelState } from "../../modelStateContext";
+import { useAuthContext } from "../../authContext";
 
 const ACTIONS = {
     SET_FIELD: "set-user-fields",
@@ -29,7 +29,7 @@ const initialState = {
     },
     showPassword: false,
     isSigninLoading: false,
-    rememberUser: false,
+    rememberUser: true,
 };
 
 const reducer = (state, action) => {
@@ -54,6 +54,7 @@ const reducer = (state, action) => {
 
         case ACTIONS.SET_SIGNIN_LOADING:
             return { ...state, isSigninLoading: action.payload };
+
         case ACTIONS.SET_REMEMBER_USER:
             return { ...state, rememberUser: action.payload };
 
@@ -67,8 +68,8 @@ const reducer = (state, action) => {
 
 const SignIn = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { showModel, closeModel } = useModelState();
-
+    const { closeModel } = useModelState();
+    const { onSignin } = useAuthContext();
     const {
         usernameOrEmail,
         userPassword,
@@ -103,10 +104,8 @@ const SignIn = () => {
 
             if (response.ok) {
                 toast.success("Login Successfully");
-                if (rememberUser) {
-                    const { jwt_token } = JSON.parse(responseText);
-                    Cookies.setItem("jwt_token", jwt_token, { expires: 30 });
-                }
+                const { jwt_token } = JSON.parse(responseText);
+                onSignin(jwt_token, rememberUser);
                 dispatch({ type: ACTIONS.RESET_FORM });
                 closeModel();
             } else {
@@ -156,8 +155,8 @@ const SignIn = () => {
                     submittedUserPassword,
                     isUsernameValid
                 );
-                console.log("username", submittedUsernameOrEmail);
-                console.log("password", submittedUserPassword);
+                // console.log("username", submittedUsernameOrEmail);
+                // console.log("password", submittedUserPassword);
             } else {
                 toast.error("Invalid login credentials", { duration: 1600 });
             }
@@ -272,6 +271,7 @@ const SignIn = () => {
                         <StyledComponent.RememberUserInput
                             id="rememberMe"
                             type="checkbox"
+                            checked={rememberUser}
                             onChange={(event) =>
                                 dispatch({
                                     type: ACTIONS.SET_REMEMBER_USER,
@@ -283,11 +283,12 @@ const SignIn = () => {
                             Remember me
                         </StyledComponent.RememberUserInputLabel>
                     </StyledComponent.SignInInputFieldItem>
+
                     <StyledComponent.SignInInputFieldItem>
                         <StyledComponent.SignInBtn
                             type="submit"
                             disabled={isSigninLoading}
-                            isFormLoading={isSigninLoading}
+                            isformloading={isSigninLoading}
                         >
                             <StyledComponent.SignInBtnText>
                                 Sign In

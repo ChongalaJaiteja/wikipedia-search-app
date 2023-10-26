@@ -12,6 +12,7 @@ const tabs = [
 const Authentication = () => {
     const [currentTab, setCurrentTab] = useState(tabs[0].tabId);
     const { closeModel } = useModelState();
+
     const handleTabClick = (tabId) => {
         setCurrentTab(tabId);
     };

@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useModelState } from "../../modelStateContext";
 import { useWikipediaContext } from "../../wikipediaContext";
 import PopupModel from "../popupModel";
+import ProfilePopup from "../profilePopup";
 import Authentication from "../authentication";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import { useAuthContext } from "../../authContext";
+import toast from "react-hot-toast";
 
 // import SearchSuggestion from "../searchSuggestion";
 
@@ -18,33 +21,44 @@ const Home = () => {
     const [searchInput, onChangeInput] = useState("");
     const { openModel } = useModelState();
     const { isLightTheme, toggleTheme } = useWikipediaContext();
+    const { isSignedIn } = useAuthContext();
 
     // Define a function to handle form submission
     const onSubmit = (event) => {
         event.preventDefault();
-        // Redirect to the Wikipedia search page with the search query and type parameters
-        navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+        if (searchInput.trim() === "") {
+            toast.error("Invalid Input");
+        } else {
+            // Redirect to the Wikipedia search page with the search query and type parameters
+            navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+        }
+    };
+
+    const navigateToRoute = () => {
+        if (isSignedIn) navigate("/history");
+        else openModel();
     };
 
     // Define a function to render the options in the home component
     const renderHomeOptions = () => (
         <StyledComponent.HomeOptionsContainer>
             {/* Link to the "History" page */}
-            <StyledComponent.HomeOptions>
-                <StyledComponent.StyledLink to="/history">
-                    History
-                </StyledComponent.StyledLink>
+            <StyledComponent.HomeOptions onClick={navigateToRoute}>
+                <StyledComponent.StyledLink>History</StyledComponent.StyledLink>
             </StyledComponent.HomeOptions>
 
-            <StyledComponent.HomeOptions>
-                <Tooltip title="Login / Signup">
-                    <IconButton>
-                        <StyledComponent.LoginBtn onClick={openModel}>
-                            Login / Signup
-                        </StyledComponent.LoginBtn>
-                    </IconButton>
-                </Tooltip>
-            </StyledComponent.HomeOptions>
+            {!isSignedIn && (
+                <StyledComponent.HomeOptions>
+                    <Tooltip title="Signin">
+                        <IconButton onClick={openModel}>
+                            <StyledComponent.LoginBtn>
+                                Signin
+                            </StyledComponent.LoginBtn>
+                        </IconButton>
+                    </Tooltip>
+                </StyledComponent.HomeOptions>
+            )}
+
             {/* Button to toggle between light and dark mode */}
             <StyledComponent.HomeOptions onClick={toggleTheme}>
                 {isLightTheme ? (
@@ -60,6 +74,9 @@ const Home = () => {
                         </IconButton>
                     </Tooltip>
                 )}
+            </StyledComponent.HomeOptions>
+            <StyledComponent.HomeOptions>
+                <ProfilePopup />
             </StyledComponent.HomeOptions>
         </StyledComponent.HomeOptionsContainer>
     );

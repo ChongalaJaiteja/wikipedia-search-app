@@ -7,11 +7,16 @@ import AllSearchResults from "../allSearchResults";
 import ImageSearch from "../imageSearch";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import ProfilePopup from "../profilePopup";
+import { useAuthContext } from "../../authContext";
+import { useModelState } from "../../modelStateContext";
+import PopupModel from "../popupModel";
+import Authentication from "../authentication";
+import toast from "react-hot-toast";
 
 const searchOptionsList = [
     { id: "ALL", option: "All" },
     { id: "IMAGES", option: "Images" },
-    // { id: "HISTORY", option: "History" },
 ];
 
 const Wikipedia = () => {
@@ -24,10 +29,16 @@ const Wikipedia = () => {
     const [currentSearchOptionId, setSearchOptionId] =
         useState(searchQueryType);
     const { isLightTheme, toggleTheme } = useWikipediaContext();
+    const { isSignedIn } = useAuthContext();
+    const { openModel } = useModelState();
 
     const onSubmitSearchInput = (event) => {
         event.preventDefault();
-        navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+        if (searchInput.trim() === "") {
+            toast.error("Invalid Input");
+        } else {
+            navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+        }
     };
 
     const onSelectSearchOption = (id) => {
@@ -41,6 +52,12 @@ const Wikipedia = () => {
             setSearchOptionId(searchQueryType);
         }
     }, [query]);
+
+    const onClickSigninBtn = () => {
+        openModel();
+        navigate("/wikipedia-search-app");
+    };
+    const handleSearchInputBlur = (event) => {};
 
     const renderNavBar = () => (
         <StyledComponents.NavBar>
@@ -57,21 +74,36 @@ const Wikipedia = () => {
                     value={searchInput}
                 />
             </StyledComponents.NavSearchFormContainer>
-            <StyledComponents.NavBarToggleThemeContainer onClick={toggleTheme}>
-                {isLightTheme ? (
-                    <Tooltip title="dark mode">
-                        <IconButton>
-                            <StyledComponents.NavDarkModeIcon />
-                        </IconButton>
-                    </Tooltip>
+            <StyledComponents.NavBarOptionsBgContainer>
+                <StyledComponents.NavBarToggleThemeContainer
+                    onClick={toggleTheme}
+                >
+                    {isLightTheme ? (
+                        <Tooltip title="dark mode">
+                            <IconButton>
+                                <StyledComponents.NavDarkModeIcon />
+                            </IconButton>
+                        </Tooltip>
+                    ) : (
+                        <Tooltip title="light mode">
+                            <IconButton>
+                                <StyledComponents.NavLightModeIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                </StyledComponents.NavBarToggleThemeContainer>
+                {isSignedIn ? (
+                    <ProfilePopup isWikipediaPage={true} />
                 ) : (
-                    <Tooltip title="light mode">
-                        <IconButton>
-                            <StyledComponents.NavLightModeIcon />
+                    <Tooltip title="Signin">
+                        <IconButton onClick={onClickSigninBtn}>
+                            <StyledComponents.SigninBtn>
+                                Signin
+                            </StyledComponents.SigninBtn>
                         </IconButton>
                     </Tooltip>
                 )}
-            </StyledComponents.NavBarToggleThemeContainer>
+            </StyledComponents.NavBarOptionsBgContainer>
         </StyledComponents.NavBar>
     );
 
@@ -81,9 +113,6 @@ const Wikipedia = () => {
                 return <AllSearchResults />;
             case "IMAGES":
                 return <ImageSearch />;
-            // case "HISTORY":
-            //     console.log("history");
-            //     break;
             default:
                 navigate("/*");
         }
@@ -105,11 +134,13 @@ const Wikipedia = () => {
     );
 
     return (
-        <StyledComponents.WikipediaMainBgContainer>
-            {renderNavBar()}
-            {renderSearchFilter()}
-            {RenderSearchResults()}
-        </StyledComponents.WikipediaMainBgContainer>
+        <>
+            <StyledComponents.WikipediaMainBgContainer>
+                {renderNavBar()}
+                {renderSearchFilter()}
+                {RenderSearchResults()}
+            </StyledComponents.WikipediaMainBgContainer>
+        </>
     );
 };
 export default Wikipedia;

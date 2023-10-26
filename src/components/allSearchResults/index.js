@@ -6,11 +6,9 @@ import AllSearchItem from "../allsearchItem";
 import Pagination from "../pagination";
 import ContentLoader from "react-content-loader";
 import * as StyledComponent from "./styledComponent";
-import Loader from "../loader";
-import ReloadPage from "../reloadPage";
-import NoResultsFound from "../noResultsFound";
 import PopupModel from "../popupModel";
 import ShareModel from "../shareModel";
+import PageView from "../pageView";
 
 const AllSearchResults = () => {
     const [query] = useSearchParams();
@@ -26,11 +24,27 @@ const AllSearchResults = () => {
     const { openModel } = useModelState();
     const [shareLink, setShareLink] = useState("");
 
+    const svgLoader = (
+        <ContentLoader
+            speed={0.3}
+            width="100%"
+            height={124}
+            viewBox="0 0 100% 124"
+            backgroundColor="#e6e6e6"
+            foregroundColor="#d4d4d4"
+        >
+            <rect x="4" y="28" rx="10" ry="10" width="70%" height="18" />
+            <rect x="4" y="52" rx="10" ry="10" width="99%" height="43" />
+            <rect x="5" y="6" rx="10" ry="10" width="20%" height="17" />
+        </ContentLoader>
+    );
+
     const images = {
         reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
         noResults:
             "https://img.freepik.com/free-vector/flat-design-no-data-illustration_23-2150527142.jpg?w=740&t=st=1695036731~exp=1695037331~hmac=a793ff5dde6918e306e53726059eb01dd5fa0b560067e4e9df6e20a3d4715314",
     };
+
     const handelCurrentPage = ({ currentPage, offset }) => {
         setCurrentPage(currentPage);
         setOffset(offset);
@@ -78,48 +92,6 @@ const AllSearchResults = () => {
         </>
     );
 
-    const renderLoaderView = () => {
-        const svgLoader = (
-            <ContentLoader
-                speed={0.3}
-                width="100%"
-                height={124}
-                viewBox="0 0 100% 124"
-                backgroundColor="#e6e6e6"
-                foregroundColor="#d4d4d4"
-            >
-                <rect x="4" y="28" rx="10" ry="10" width="70%" height="18" />
-                <rect x="4" y="52" rx="10" ry="10" width="99%" height="43" />
-                <rect x="5" y="6" rx="10" ry="10" width="20%" height="17" />
-            </ContentLoader>
-        );
-
-        return <Loader svgLoader={svgLoader} limit={limit} />;
-    };
-
-    const renderFailureView = () => {
-        const reloadImageUrl = images.reload;
-        return (
-            <ReloadPage
-                reloadImageUrl={reloadImageUrl}
-                reloadFunction={fetchData}
-                reloadText="Retry"
-            />
-        );
-    };
-
-    const renderNoResultsFound = () => {
-        const notFoundImageUrl = images.noResults;
-        return <NoResultsFound notFoundImageUrl={notFoundImageUrl} />;
-    };
-
-    const getData = () => {
-        if (isLoading) return renderLoaderView();
-        if (error) return renderFailureView();
-        if (searchResults.length === 0) return renderNoResultsFound();
-        return renderResults();
-    };
-
     const fetchData = async () => {
         setLoading(true);
         setError(null);
@@ -149,7 +121,22 @@ const AllSearchResults = () => {
         fetchData();
     }, [offset]);
 
-    return <>{getData()}</>;
+    const renderViews = {
+        fetchData: fetchData,
+        loadingView: { isLoading, svgLoader, limit },
+        successView: {
+            data: searchResults,
+            renderResults,
+            notFoundImageUrl: images.noResults,
+        },
+        failureView: {
+            reloadImageUrl: images.reload,
+            reloadText: "Retry",
+            error,
+        },
+    };
+
+    return <PageView renderViews={renderViews} />;
 };
 
 export default AllSearchResults;

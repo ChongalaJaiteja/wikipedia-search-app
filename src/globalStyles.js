@@ -1,8 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-:root {
 
+:root {
     /*Define global CSS variables here*/
     --theme-page-bg-color:${(props) => props.theme.backgroundColor};
     --theme-container-bg-color:${(props) => props.theme.containerBackground};

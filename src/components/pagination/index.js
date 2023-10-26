@@ -8,15 +8,25 @@ const Pagination = ({
     limit,
     offset,
     handelCurrentPage,
+    imageSearch,
 }) => {
     const handleNextPage = () => {
-        if (offset + limit <= totalResults) {
-            handelCurrentPage({
-                currentPage: currentPage + 1,
-                offset: offset + limit,
-            });
+        if (imageSearch) {
+            if (totalResults) {
+                handelCurrentPage({
+                    currentPage: currentPage + 1,
+                    offset: offset + limit,
+                });
+            } else handelCurrentPage({ currentPage: 1, offset: 0 });
         } else {
-            handelCurrentPage({ currentPage: 1, offset: 0 });
+            if (offset + limit <= totalResults) {
+                handelCurrentPage({
+                    currentPage: currentPage + 1,
+                    offset: offset + limit,
+                });
+            } else {
+                handelCurrentPage({ currentPage: 1, offset: 0 });
+            }
         }
     };
 
@@ -71,6 +81,7 @@ const Pagination = ({
                                 </StyledComponent.PaginationBtn>
                             </IconButton>
                         </Tooltip>
+
                         {/* <StyledComponent.NavigateToFirstPageTextContainer
                                 onClick={navigateToFirstPage}
                             >
@@ -101,9 +112,13 @@ const Pagination = ({
                     <IconButton>
                         <StyledComponent.PaginationBtn
                             onClick={handleNextPage}
-                            // title="Next Page"
                             disabled={
-                                currentPage === Math.ceil(totalResults / limit)
+                                imageSearch
+                                    ? totalResults
+                                        ? false
+                                        : true
+                                    : currentPage ===
+                                      Math.ceil(totalResults / limit)
                             }
                         >
                             <StyledComponent.PaginationBtnContent>
@@ -115,9 +130,11 @@ const Pagination = ({
                 </Tooltip>
             </StyledComponent.PageNavigationContainer>
 
-            <StyledComponent.PageNumberDetails>
-                {currentPage} of {Math.ceil(totalResults / limit)}
-            </StyledComponent.PageNumberDetails>
+            {!imageSearch && (
+                <StyledComponent.PageNumberDetails>
+                    {currentPage} of {Math.ceil(totalResults / limit)}
+                </StyledComponent.PageNumberDetails>
+            )}
         </StyledComponent.PaginationContainerSm>
     );
 };

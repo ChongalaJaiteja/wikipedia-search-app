@@ -1,8 +1,14 @@
 import styled, { css } from "styled-components";
 import { BsWikipedia } from "react-icons/bs";
-import { SearchFormContainer, SearchInput } from "../home/styledComponent";
+import {
+    SearchFormContainer,
+    SearchInput,
+    DarkModeIcon,
+    LightModeIcon,
+    LoginBtn,
+} from "../home/styledComponent";
 import { Link } from "react-router-dom";
-import { DarkModeIcon, LightModeIcon } from "../home/styledComponent";
+
 const theme = css`
     background-color: var(--theme-page-bg-color);
     color: var(--theme-primary-text-color);
@@ -42,6 +48,13 @@ export const NavSearchFormContainer = styled(SearchFormContainer)`
     width: 52%;
     max-width: 30rem;
 `;
+
+export const NavBarOptionsBgContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 clamp(0.5em, 1vw + 1em, 1.7em);
+`;
 export const NavSearchInput = styled(SearchInput)``;
 
 export const NavDarkModeIcon = styled(DarkModeIcon)`
@@ -69,6 +82,8 @@ export const WikipediaImage = styled.img`
     } */
 `;
 export const NavBarToggleThemeContainer = styled.div``;
+
+export const SigninBtn = styled(LoginBtn)``;
 
 export const SearchOptionsBgContainer = styled.ul`
     list-style-type: none;

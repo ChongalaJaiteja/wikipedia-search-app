@@ -188,6 +188,7 @@ const Signup = () => {
                     password,
                 }),
             };
+            
             const response = await fetch(url, options);
             const responseText = await response.text();
             if (response.ok) {
@@ -380,7 +381,7 @@ const Signup = () => {
                     <StyledComponent.SignupBtn
                         type="submit"
                         disabled={isSignupLoading}
-                        isFormLoading={isSignupLoading}
+                        isformloading={isSignupLoading}
                     >
                         <StyledComponent.SignupBtnText>
                             Sign Up
