@@ -176,7 +176,7 @@ const Signup = () => {
     const verifyUser = async (username, email, password) => {
         dispatch({ type: ACTIONS.SET_SIGNUP_LOADING, payload: true });
         try {
-            const url = "http://localhost:3001/register/";
+            const url = `${process.env.REACT_APP_BASE_URL}/register`;
             const options = {
                 headers: {
                     "Content-Type": "application/json",
@@ -188,7 +188,7 @@ const Signup = () => {
                     password,
                 }),
             };
-            
+
             const response = await fetch(url, options);
             const responseText = await response.text();
             if (response.ok) {

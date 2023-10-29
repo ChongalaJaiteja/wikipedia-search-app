@@ -30,12 +30,12 @@ const Home = () => {
             toast.error("Invalid Input");
         } else {
             // Redirect to the Wikipedia search page with the search query and type parameters
-            navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+            navigate(`/wikipedia-search-app/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
         }
     };
 
     const navigateToRoute = () => {
-        if (isSignedIn) navigate("/history");
+        if (isSignedIn) navigate("/wikipedia-search-app/history");
         else openModel();
     };
 

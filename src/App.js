@@ -2,7 +2,7 @@
 import Wikipedia from "./components/wikipedia";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
-import History from "./components/history";
+import { History } from "./components/history";
 import Profile from "./components/profile";
 import ProtectedRoute from "./components/protectedRoute";
 import { GlobalStyles } from "./globalStyles";
@@ -24,17 +24,20 @@ const App = () => (
                                 path="/wikipedia-search-app"
                                 element={<Home />}
                             />
-                            <Route path="/wikipedia" element={<Wikipedia />} />
                             <Route
-                                path="/history"
+                                path="/wikipedia-search-app/wikipedia"
+                                element={<Wikipedia />}
+                            />
+                            <Route
+                                path="/wikipedia-search-app/history"
                                 element={
-                                    <ProtectedRoute> 
+                                    <ProtectedRoute>
                                         <History />
                                     </ProtectedRoute>
                                 }
                             />
                             <Route
-                                path="profile"
+                                path="/wikipedia-search-app/profile"
                                 element={
                                     <ProtectedRoute>
                                         <Profile />

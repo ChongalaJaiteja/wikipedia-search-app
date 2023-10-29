@@ -16,11 +16,11 @@ const ProfilePopup = ({ isWikipediaPage }) => {
                     />
                     {showProfileMenu && (
                         <StyledComponent.ProfilePopUpContainer>
-                            <StyledComponent.StyledLink to="/profile">
+                            <StyledComponent.StyledLink to="/wikipedia-search-app/profile">
                                 Profile
                             </StyledComponent.StyledLink>
                             {isWikipediaPage && (
-                                <StyledComponent.StyledLink to="/history">
+                                <StyledComponent.StyledLink to="/wikipedia-search-app/history">
                                     History
                                 </StyledComponent.StyledLink>
                             )}

@@ -37,7 +37,7 @@ const Wikipedia = () => {
         if (searchInput.trim() === "") {
             toast.error("Invalid Input");
         } else {
-            navigate(`/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+            navigate(`/wikipedia-search-app/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
         }
     };
 

@@ -87,7 +87,7 @@ const SignIn = () => {
     const verifyUser = async (username_or_email, password, is_username) => {
         dispatch({ type: ACTIONS.SET_SIGNIN_LOADING, payload: true });
         try {
-            const url = "http://localhost:3001/login/";
+            const url = `${process.env.REACT_APP_BASE_URL}/login`;
             const options = {
                 headers: {
                     "Content-Type": "application/json",

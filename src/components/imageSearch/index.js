@@ -110,7 +110,7 @@ const ImageSearch = () => {
     const onClickImage = async ({ wikipediaTitle }) => {
         const link = `https://en.wikipedia.org/wiki/${wikipediaTitle}`;
         try {
-            const url = "http://localhost:3001/history";
+            const url = `${process.env.REACT_APP_BASE_URL}/history`;
             const options = {
                 headers: {
                     "Content-Type": "application/json",

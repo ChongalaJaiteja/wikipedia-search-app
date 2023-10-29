@@ -8,7 +8,7 @@ export const WikipediaProvider = ({ children }) => {
     const [isLightTheme, setIsLightTheme] = useState(() => {
         try {
             const storedValue = JSON.parse(localStorage.getItem("lightMode"));
-            return storedValue !== null ? storedValue : true;
+            return storedValue !== null ? storedValue : false;
         } catch (error) {
             return true;
         }
