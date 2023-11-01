@@ -28,17 +28,18 @@ const Wikipedia = () => {
     const [searchInput, setSearchInput] = useState(searchQuery);
     const [currentSearchOptionId, setSearchOptionId] =
         useState(searchQueryType);
+    const [showSearchInputSm, setShowSearchInputSm] = useState(false);
+
     const { isLightTheme, toggleTheme } = useWikipediaContext();
     const { isSignedIn } = useAuthContext();
     const { openModel } = useModelState();
 
     const onSubmitSearchInput = (event) => {
         event.preventDefault();
-        if (searchInput.trim() === "") {
-            toast.error("Invalid Input");
-        } else {
-            navigate(`/wikipedia-search-app/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
-        }
+        setShowSearchInputSm(false);
+        navigate(
+            `/wikipedia-search-app/wikipedia?search_query=${searchInput.trim()}&type=ALL`
+        );
     };
 
     const onSelectSearchOption = (id) => {
@@ -57,53 +58,81 @@ const Wikipedia = () => {
         openModel();
         navigate("/wikipedia-search-app");
     };
-    const handleSearchInputBlur = (event) => {};
-
     const renderNavBar = () => (
         <StyledComponents.NavBar>
-            <StyledComponents.StyledLogoLink to="/wikipedia-search-app">
-                <StyledComponents.WikipediaNavLogo title="wikipedia" />
-            </StyledComponents.StyledLogoLink>
             <StyledComponents.NavSearchFormContainer
                 onSubmit={onSubmitSearchInput}
+                onBlur={() => setShowSearchInputSm(false)}
             >
-                <StyledComponents.NavSearchInput
-                    type="search"
-                    placeholder="Enter a Keyword"
-                    onChange={(event) => setSearchInput(event.target.value)}
-                    value={searchInput}
-                />
-            </StyledComponents.NavSearchFormContainer>
-            <StyledComponents.NavBarOptionsBgContainer>
-                <StyledComponents.NavBarToggleThemeContainer
-                    onClick={toggleTheme}
-                >
-                    {isLightTheme ? (
-                        <Tooltip title="dark mode">
-                            <IconButton>
-                                <StyledComponents.NavDarkModeIcon />
-                            </IconButton>
-                        </Tooltip>
-                    ) : (
-                        <Tooltip title="light mode">
-                            <IconButton>
-                                <StyledComponents.NavLightModeIcon />
-                            </IconButton>
-                        </Tooltip>
-                    )}
-                </StyledComponents.NavBarToggleThemeContainer>
-                {isSignedIn ? (
-                    <ProfilePopup isWikipediaPage={true} />
-                ) : (
-                    <Tooltip title="Signin">
-                        <IconButton onClick={onClickSigninBtn}>
-                            <StyledComponents.SigninBtn>
-                                Signin
-                            </StyledComponents.SigninBtn>
-                        </IconButton>
-                    </Tooltip>
+                {!showSearchInputSm && (
+                    <>
+                        <StyledComponents.StyledLogoLink to="/wikipedia-search-app">
+                            <StyledComponents.WikipediaNavLogo title="wikipedia" />
+                        </StyledComponents.StyledLogoLink>
+
+                        <StyledComponents.NavSearchInput
+                            type="search"
+                            placeholder="Enter a Keyword"
+                            onChange={(event) =>
+                                setSearchInput(event.target.value)
+                            }
+                            value={searchInput}
+                        />
+
+                        <StyledComponents.NavBarOptionsBgContainer>
+                            <StyledComponents.NavSearchIcon
+                                onClick={() => setShowSearchInputSm(true)}
+                            />
+                            <StyledComponents.NavBarToggleThemeContainer
+                                onClick={toggleTheme}
+                            >
+                                {isLightTheme ? (
+                                    <Tooltip title="dark mode">
+                                        <IconButton>
+                                            <StyledComponents.NavDarkModeIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                ) : (
+                                    <Tooltip title="light mode">
+                                        <IconButton>
+                                            <StyledComponents.NavLightModeIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                            </StyledComponents.NavBarToggleThemeContainer>
+                            {isSignedIn ? (
+                                <ProfilePopup isWikipediaPage={true} />
+                            ) : (
+                                <Tooltip title="Signin">
+                                    <IconButton onClick={onClickSigninBtn}>
+                                        <StyledComponents.SigninTextSm>
+                                            Sign in
+                                        </StyledComponents.SigninTextSm>
+                                        <StyledComponents.SigninBtn>
+                                            Sign in
+                                        </StyledComponents.SigninBtn>
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </StyledComponents.NavBarOptionsBgContainer>
+                    </>
                 )}
-            </StyledComponents.NavBarOptionsBgContainer>
+
+                {showSearchInputSm && (
+                    <>
+                        <StyledComponents.NavSearchIcon />
+                        <StyledComponents.NavBarSearchInputSm
+                            autoFocus={true}
+                            type="search"
+                            placeholder="Enter a Keyword"
+                            onChange={(event) =>
+                                setSearchInput(event.target.value)
+                            }
+                            value={searchInput}
+                        />
+                    </>
+                )}
+            </StyledComponents.NavSearchFormContainer>
         </StyledComponents.NavBar>
     );
 

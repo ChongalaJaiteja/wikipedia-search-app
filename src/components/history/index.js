@@ -8,6 +8,8 @@ import { useAuthContext } from "../../authContext";
 import PageView from "../pageView";
 import HistoryDateItemCard from "../historyDateItemCard";
 import * as StyledComponent from "./styledComponent";
+import Toaster from "../toaster";
+import toast from "react-hot-toast";
 
 const HistoryContext = createContext();
 
@@ -159,7 +161,7 @@ export const History = () => {
         );
     };
 
-    const handleDeleteHistory = (event) => {
+    const handleDeleteHistory = async (event) => {
         event.preventDefault();
         const historyIds = historyList.reduce((result, { history }) => {
             const selectedIds = history
@@ -167,8 +169,31 @@ export const History = () => {
                 .map(({ historyId }) => historyId);
             return [...result, ...selectedIds];
         }, []);
-        console.log(historyIds);
+
+        try {
+            const url = `${process.env.REACT_APP_BASE_URL}/history`;
+            const options = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                body: JSON.stringify({ historyIds }),
+                method: "DELETE",
+            };
+            const response = await fetch(url, options);
+            if (response.ok) {
+                toast.success("History Deleted successfully");
+                fetchHistory();
+            } else {
+                toast.error("Failed to Delete History");
+            }
+        } catch (error) {
+            toast.error("Server Error");
+        } finally {
+            setTotalHistorySelected(0);
+        }
     };
+
     const svgLoader = (
         <ContentLoader
             speed={0.3}
@@ -199,84 +224,91 @@ export const History = () => {
     };
 
     return (
-        <StyledComponent.HistoryBgContainer>
-            <StyledComponent.HistoryNavBar>
-                {!totalHistorySelected && (
-                    <StyledComponent.HistorySearchInputFormContainer>
-                        {!showSearchInputSm && (
-                            <>
+        <>
+            <Toaster />
+            <StyledComponent.HistoryBgContainer>
+                <StyledComponent.HistoryNavBar>
+                    {!totalHistorySelected && (
+                        <StyledComponent.HistorySearchInputFormContainer>
+                            {!showSearchInputSm && (
+                                <>
+                                    <Tooltip
+                                        title="Back"
+                                        onClick={() => navigate(-1)}
+                                    >
+                                        <StyledComponent.ToolTipButton>
+                                            <StyledComponent.NavigateBackIcon />
+                                        </StyledComponent.ToolTipButton>
+                                    </Tooltip>
+
+                                    <StyledComponent.HistoryMainHeading>
+                                        History
+                                    </StyledComponent.HistoryMainHeading>
+
+                                    <StyledComponent.SearchIcon
+                                        onClick={() =>
+                                            setShowSearchInputSm(true)
+                                        }
+                                    />
+                                </>
+                            )}
+
+                            {showSearchInputSm && (
+                                <>
+                                    <StyledComponent.SearchIcon />
+                                    <StyledComponent.HistorySearchInputSm
+                                        type="search"
+                                        autoFocus={true}
+                                        placeholder="Search history"
+                                        onBlur={() =>
+                                            setShowSearchInputSm(false)
+                                        }
+                                        onChange={handleOnChange}
+                                        value={historySearchInput}
+                                    />
+                                </>
+                            )}
+
+                            <StyledComponent.SearchHistoryInput
+                                type="search"
+                                placeholder="Search history"
+                                value={historySearchInput}
+                                onChange={handleOnChange}
+                            />
+                        </StyledComponent.HistorySearchInputFormContainer>
+                    )}
+
+                    {totalHistorySelected > 0 && (
+                        <StyledComponent.DeleteBgContainer>
+                            <StyledComponent.DeleteCountDetailsContainer>
                                 <Tooltip
-                                    title="Back"
-                                    onClick={() => navigate(-1)}
+                                    title="Cancel"
+                                    onClick={handleCancelDeleteHistory}
                                 >
                                     <StyledComponent.ToolTipButton>
-                                        <StyledComponent.NavigateBackIcon />
+                                        <StyledComponent.CloseIcon />
                                     </StyledComponent.ToolTipButton>
                                 </Tooltip>
+                                <StyledComponent.SelectedHistoryItemsCount>
+                                    {totalHistorySelected} Selected
+                                </StyledComponent.SelectedHistoryItemsCount>
+                            </StyledComponent.DeleteCountDetailsContainer>
 
-                                <StyledComponent.HistoryMainHeading>
-                                    History
-                                </StyledComponent.HistoryMainHeading>
-
-                                <StyledComponent.SearchIcon
-                                    onClick={() => setShowSearchInputSm(true)}
-                                />
-                            </>
-                        )}
-
-                        {showSearchInputSm && (
-                            <>
-                                <StyledComponent.SearchIcon />
-                                <StyledComponent.HistorySearchInputSm
-                                    type="search"
-                                    autoFocus={true}
-                                    placeholder="Search history"
-                                    onBlur={() => setShowSearchInputSm(false)}
-                                    onChange={handleOnChange}
-                                    value={historySearchInput}
-                                />
-                            </>
-                        )}
-
-                        <StyledComponent.SearchHistoryInput
-                            type="search"
-                            placeholder="Search history"
-                            value={historySearchInput}
-                            onChange={handleOnChange}
-                        />
-                    </StyledComponent.HistorySearchInputFormContainer>
-                )}
-
-                {totalHistorySelected > 0 && (
-                    <StyledComponent.DeleteBgContainer>
-                        <StyledComponent.DeleteCountDetailsContainer>
-                            <Tooltip
-                                title="Cancel"
-                                onClick={handleCancelDeleteHistory}
+                            <StyledComponent.DeleteHistoryFormContainer
+                                onSubmit={handleDeleteHistory}
                             >
-                                <StyledComponent.ToolTipButton>
-                                    <StyledComponent.CloseIcon />
-                                </StyledComponent.ToolTipButton>
-                            </Tooltip>
-                            <StyledComponent.SelectedHistoryItemsCount>
-                                {totalHistorySelected} Selected
-                            </StyledComponent.SelectedHistoryItemsCount>
-                        </StyledComponent.DeleteCountDetailsContainer>
-
-                        <StyledComponent.DeleteHistoryFormContainer
-                            onSubmit={handleDeleteHistory}
-                        >
-                            <StyledComponent.DeleteIcon
-                                onClick={handleDeleteHistory}
-                            />
-                            <StyledComponent.DeleteBtn type="submit">
-                                Delete
-                            </StyledComponent.DeleteBtn>
-                        </StyledComponent.DeleteHistoryFormContainer>
-                    </StyledComponent.DeleteBgContainer>
-                )}
-            </StyledComponent.HistoryNavBar>
-            <PageView renderViews={renderViews} />
-        </StyledComponent.HistoryBgContainer>
+                                <StyledComponent.DeleteIcon
+                                    onClick={handleDeleteHistory}
+                                />
+                                <StyledComponent.DeleteBtn type="submit">
+                                    Delete
+                                </StyledComponent.DeleteBtn>
+                            </StyledComponent.DeleteHistoryFormContainer>
+                        </StyledComponent.DeleteBgContainer>
+                    )}
+                </StyledComponent.HistoryNavBar>
+                <PageView renderViews={renderViews} />
+            </StyledComponent.HistoryBgContainer>
+        </>
     );
 };

@@ -133,11 +133,12 @@ const ImageSearch = () => {
             <>
                 <StyledComponent.ResponsiveMansoryLayout
                     columnsCountBreakPoints={{
-                        320: 1,
-                        440: 2,
-                        590: 3,
-                        825: 4,
-                        1100: 5,
+                        120: 1,
+                        314: 2,
+                        460: 3,
+                        600: 4,
+                        825: 5,
+                        1100: 6,
                     }}
                 >
                     <Masonry gutter="1em">

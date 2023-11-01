@@ -145,7 +145,7 @@ export const DeleteIcon = styled(MdOutlineDeleteOutline)`
 export const DeleteBtn = styled.button`
     display: none;
     background-color: transparent;
-    border: 1px solid #E74646;
+    border: 1px solid #e74646;
     border-radius: 9px;
     padding-block: 0.35em;
     padding-inline: 0.7em;
@@ -153,7 +153,7 @@ export const DeleteBtn = styled.button`
     color: var(--theme-primary-text-color);
     font-size: clamp(0.4em, 1vw + 0.52rem, 1rem);
     &:hover {
-        background-color: #E74646;
+        background-color: #e74646;
         color: white;
     }
     @media (min-width: 565px) {
