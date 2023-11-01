@@ -155,8 +155,6 @@ const SignIn = () => {
                     submittedUserPassword,
                     isUsernameValid
                 );
-                // console.log("username", submittedUsernameOrEmail);
-                // console.log("password", submittedUserPassword);
             } else {
                 toast.error("Invalid login credentials", { duration: 1600 });
             }
@@ -246,18 +244,6 @@ const SignIn = () => {
                                             event.preventDefault()
                                         }
                                     />
-                                    {name.toLowerCase().includes("password") &&
-                                        state[name].trim() !== "" && (
-                                            <StyledComponent.ToggleSigninPasswordContainer
-                                                onClick={toggleShowPassword}
-                                            >
-                                                {showPassword ? (
-                                                    <StyledComponent.HidePasswordIcon title="Hide Password" />
-                                                ) : (
-                                                    <StyledComponent.PasswordShowIcon title="Show Password" />
-                                                )}
-                                            </StyledComponent.ToggleSigninPasswordContainer>
-                                        )}
                                 </StyledComponent.SignInInputFieldContainer>
                                 {error && (
                                     <StyledComponent.SignInInputError>
