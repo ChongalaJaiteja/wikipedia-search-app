@@ -6,7 +6,7 @@ import { History } from "./components/history";
 import Profile from "./components/profile";
 import ProtectedRoute from "./components/protectedRoute";
 import { GlobalStyles } from "./globalStyles";
-import { Routes, Route, BrowserRouter, HashRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ModelStateProvider } from "./modelStateContext";
 import { ThemeContextProvider } from "./themeContext";
 import { WikipediaProvider } from "./wikipediaContext";
