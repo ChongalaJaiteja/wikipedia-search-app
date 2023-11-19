@@ -3,18 +3,21 @@ import NoResultsFound from "../noResultsFound";
 import Pagination from "../pagination";
 import Loader from "../loader";
 
+// This component is responsible for rendering different views based on the provided props.
 const PageView = ({
-    renderViews,
-    isImageSearch,
-    currentPage,
-    offset,
-    handelCurrentPage,
+    renderViews, // An object containing different views for loading, success, and failure.
+    isImageSearch, // A boolean flag indicating if it's an image search.
+    currentPage, // The current page number.
+    offset, // The offset.
+    handelCurrentPage, // A function to handle changing the current page.
 }) => {
+    // Destructuring renderViews to access different views.
     const { fetchData, loadingView, successView, failureView } = renderViews;
-    const { limit, svgLoader, isLoading } = loadingView;
-    const { data, renderResults, notFoundImageUrl } = successView;
-    const { reloadImageUrl, reloadText, error } = failureView;
+    const { limit, svgLoader, isLoading } = loadingView; // Destructuring loadingView.
+    const { data, renderResults, notFoundImageUrl } = successView; // Destructuring successView.
+    const { reloadImageUrl, reloadText, error } = failureView; // Destructuring failureView.
 
+    // This function renders the loader view.
     const renderLoaderView = () => {
         return (
             <Loader
@@ -25,6 +28,7 @@ const PageView = ({
         );
     };
 
+    // This function renders the failure view.
     const renderFailureView = () => {
         return (
             <ReloadPage
@@ -35,6 +39,7 @@ const PageView = ({
         );
     };
 
+    // This function renders the view when no results are found.
     const renderNoResultsFound = () => {
         return (
             <>
@@ -43,7 +48,7 @@ const PageView = ({
                     <Pagination
                         imageSearch={true}
                         currentPage={currentPage}
-                        totalResults={data.length > 0}
+                        totalResults={data.length > 0} // Checking if there are results.
                         limit={limit}
                         offset={offset}
                         handelCurrentPage={handelCurrentPage}
@@ -53,14 +58,16 @@ const PageView = ({
         );
     };
 
+    // This function determines which view to render based on the provided props.
     const getData = () => {
-        if (isLoading) return renderLoaderView();
-        if (error) return renderFailureView();
-        if (data.length === 0) return renderNoResultsFound();
-        return renderResults();
+        if (isLoading) return renderLoaderView(); // If loading, show the loader view.
+        if (error) return renderFailureView(); // If there is an error, show the failure view.
+        if (data.length === 0) return renderNoResultsFound(); // If no results, show the "No Results Found" view.
+        return renderResults(); // Otherwise, render the success view.
     };
 
+    // Render the appropriate view based on the conditions.
     return <>{getData()}</>;
 };
 
-export default PageView;
+export default PageView; // Export the PageView component.

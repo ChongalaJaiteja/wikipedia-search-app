@@ -1,25 +1,33 @@
+// Import necessary modules and components
 import { useState } from "react";
-import * as StyleComponent from "./styledComponent";
-import { useModelState } from "../../modelStateContext";
-import SignIn from "../signin";
-import Signup from "../signup";
+import * as StyleComponent from "./styledComponent"; // Import styled components for styling
+import { useModelState } from "../../modelStateContext"; // Import custom hook for model state context
+import SignIn from "../signin"; // Import the SignIn component for signing in
+import Signup from "../signup"; // Import the Signup component for signing up
 
+// Define tabs for switching between Sign In and Sign Up forms
 const tabs = [
     { tabId: "SIGNIN", label: "Sign in" },
     { tabId: "SIGNUP", label: "Sign up" },
 ];
 
+// Define the Authentication component responsible for displaying the authentication forms
 const Authentication = () => {
+    // Initialize state to manage the current active tab (default: Sign In)
     const [currentTab, setCurrentTab] = useState(tabs[0].tabId);
+
+    // Use the 'useModelState' hook to access model state functions
     const { closeModel } = useModelState();
 
+    // Define a function to handle tab clicks and switch between Sign In and Sign Up
     const handleTabClick = (tabId) => {
         setCurrentTab(tabId);
     };
 
+    // Define a function to render the appropriate user form based on the current tab
     const renderUserForm = () => {
-        if (currentTab === tabs[0].tabId) return <SignIn />;
-        return <Signup />;
+        if (currentTab === tabs[0].tabId) return <SignIn />; // Render Sign In form
+        return <Signup />; // Render Sign Up form
     };
 
     return (
@@ -55,4 +63,5 @@ const Authentication = () => {
     );
 };
 
+// Export the Authentication component
 export default Authentication;

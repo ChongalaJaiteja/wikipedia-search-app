@@ -1,5 +1,6 @@
 import * as StyledComponent from "./styledComponent";
 
+// ReloadPage component is responsible for rendering a reload option when an error occurs.
 const ReloadPage = ({ reloadImageUrl, reloadText, reloadFunction }) => {
     return (
         <StyledComponent.FailedViewBgContainer>
@@ -12,4 +13,4 @@ const ReloadPage = ({ reloadImageUrl, reloadText, reloadFunction }) => {
     );
 };
 
-export default ReloadPage;
+export default ReloadPage; // Export the ReloadPage component.

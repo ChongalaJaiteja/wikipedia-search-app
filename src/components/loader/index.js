@@ -1,8 +1,10 @@
+// Import necessary dependencies and components
 import * as StyledComponent from "./styledComponent";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { v4 as uuidv4 } from "uuid";
 import React from "react";
 
+// Define a function to scroll to the top of the page
 const scrollToTop = () => {
     window.scrollTo({
         top: 0,
@@ -10,12 +12,17 @@ const scrollToTop = () => {
     });
 };
 
+// Define a functional component called Loader
 const Loader = ({ svgLoader, limit, isImageLayout }) => {
     const loaders = [];
     scrollToTop();
+
+    // Create an array of loader elements based on the limit
     for (let i = 0; i < limit; i++) {
         loaders.push(React.cloneElement(svgLoader, { key: uuidv4() }));
     }
+
+    // Return a responsive masonry layout for image loading or a styled container for other content
     return isImageLayout ? (
         <ResponsiveMasonry
             columnsCountBreakPoints={{
@@ -35,4 +42,5 @@ const Loader = ({ svgLoader, limit, isImageLayout }) => {
     );
 };
 
+// Export the Loader component as the default export
 export default Loader;

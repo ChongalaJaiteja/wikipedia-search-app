@@ -3,6 +3,7 @@ import { useModelState } from "../../modelStateContext";
 import * as StyledComponent from "./styledComponent";
 import SocialMediaPlatform from "../socialMediaPlatform";
 
+// Define a list of social media platforms for sharing.
 const socialMediaList = [
     {
         id: "WHATSAPP",
@@ -31,10 +32,15 @@ const socialMediaList = [
     },
 ];
 
+// ShareModel component is responsible for rendering a share options modal.
 const ShareModel = ({ link }) => {
+    // Define a state variable to track if the Wikipedia link is copied.
     const [copyWikiUrl, setCopyWikiUrl] = useState(false);
-    const {closeModel } = useModelState();
 
+    // Access the closeModel function from the modelStateContext.
+    const { closeModel } = useModelState();
+
+    // Function to handle copying the Wikipedia link to the clipboard.
     const onCopyWikiUrl = () => {
         navigator.clipboard.writeText(link).then(() => setCopyWikiUrl(true));
         setTimeout(() => setCopyWikiUrl(false), 1020);
@@ -42,11 +48,13 @@ const ShareModel = ({ link }) => {
 
     return (
         <>
+            {/* Header section of the share modal. */}
             <StyledComponent.SharePopupHeaderContainer>
                 <StyledComponent.MainHeading>Share</StyledComponent.MainHeading>
                 <StyledComponent.PopUpCloseIcon onClick={closeModel} />
             </StyledComponent.SharePopupHeaderContainer>
 
+            {/* Container for displaying social media sharing options. */}
             <StyledComponent.SharePlatformsBgContainer>
                 {socialMediaList.map((eachSocialMedia) => (
                     <SocialMediaPlatform
@@ -57,6 +65,7 @@ const ShareModel = ({ link }) => {
                 ))}
             </StyledComponent.SharePlatformsBgContainer>
 
+            {/* Container for displaying the Wikipedia link and copy button. */}
             <StyledComponent.WikipediaLinkContainer>
                 <StyledComponent.WikiUrl title={link}>
                     {link}
@@ -72,4 +81,4 @@ const ShareModel = ({ link }) => {
     );
 };
 
-export default ShareModel;
+export default ShareModel; // Export the ShareModel component.

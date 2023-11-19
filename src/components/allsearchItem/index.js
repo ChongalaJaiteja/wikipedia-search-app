@@ -1,13 +1,20 @@
-import * as StyledComponent from "./styledComponent";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import { useAuthContext } from "../../authContext";
-import toast from "react-hot-toast";
+// Import necessary modules and components
+import * as StyledComponent from "./styledComponent"; // Import styled components from "styledComponent"
+import IconButton from "@mui/material/IconButton"; // Import IconButton component from Material-UI
+import Tooltip from "@mui/material/Tooltip"; // Import Tooltip component from Material-UI
+import { useAuthContext } from "../../authContext"; // Import the custom hook for authentication context
+import toast from "react-hot-toast"; // Import the 'react-hot-toast' library for notifications
 
+// Define the AllSearchItem component that displays search results
 const AllSearchItem = ({ searchItemDetails, onShareLink }) => {
+    // Extract relevant data from the 'searchItemDetails' prop
     const { title, pageid, snippet } = searchItemDetails;
-    const link = `https://en.wikipedia.org/wiki/${title}`;
+    const link = `${process.env.REACT_APP_WIKI_PAGE_URL}/${title}`;
+
+    // Use the 'useAuthContext' hook to access authentication-related data
     const { isSignedIn, onSignout, onSignin, jwtToken } = useAuthContext();
+
+    // Define a function 'addHistory' to add the current search item to the user's history
     const addHistory = async () => {
         try {
             const url = `${process.env.REACT_APP_BASE_URL}/history`;
@@ -30,9 +37,11 @@ const AllSearchItem = ({ searchItemDetails, onShareLink }) => {
 
     return (
         <>
+            {/* Render the search item using styled components */}
             <StyledComponent.SearchItem>
                 <StyledComponent.SearchItemContentContainer>
                     <StyledComponent.SearchItemHeader>
+                        {/* Render the search item title and link, and handle history addition on click */}
                         <StyledComponent.SearchItemTitle
                             href={link}
                             target="_blank"
@@ -68,18 +77,19 @@ const AllSearchItem = ({ searchItemDetails, onShareLink }) => {
                         </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Bookmark">
+                    {/* <Tooltip title="Bookmark">
                         <IconButton>
                             <StyledComponent.BookmarkIcon />
                             <StyledComponent.BookmarkText>
                                 Bookmark
                             </StyledComponent.BookmarkText>
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                 </StyledComponent.SearchItemFooter>
             </StyledComponent.SearchItem>
         </>
     );
 };
 
+// Export the AllSearchItem component
 export default AllSearchItem;

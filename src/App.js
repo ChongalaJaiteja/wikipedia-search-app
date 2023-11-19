@@ -1,4 +1,5 @@
 //All Rights Reserved
+// Import necessary components
 import Wikipedia from "./components/wikipedia";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
@@ -12,14 +13,20 @@ import { ThemeContextProvider } from "./themeContext";
 import { WikipediaProvider } from "./wikipediaContext";
 import { AuthContextProvider } from "./authContext";
 
+// Define the main App component
 const App = () => (
+    // Wrap the components with necessary providers
     <WikipediaProvider>
         <AuthContextProvider>
             <ThemeContextProvider>
+                {/* Apply global styles using GlobalStyles */}
                 <GlobalStyles />
+                {/* Use ModelStateProvider to manage state */}
                 <ModelStateProvider>
+                    {/* Set up routing with BrowserRouter */}
                     <BrowserRouter>
                         <Routes>
+                            {/* Define routes for different components */}
                             <Route
                                 path="/wikipedia-search-app"
                                 element={<Home />}
@@ -52,4 +59,5 @@ const App = () => (
         </AuthContextProvider>
     </WikipediaProvider>
 );
+// Export the App component
 export default App;

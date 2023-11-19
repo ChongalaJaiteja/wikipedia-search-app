@@ -6,6 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useModelState } from "../../modelStateContext";
 import { useAuthContext } from "../../authContext";
 
+// Define action types for the reducer.
 const ACTIONS = {
     SET_FIELD: "set-user-fields",
     SET_FORM_ERROR: "set-form-error",
@@ -15,11 +16,13 @@ const ACTIONS = {
     SET_REMEMBER_USER: "set-remember-user",
 };
 
+// Define field names for input elements.
 const INPUT_FIELD_NAMES = {
     USERNAME_OR_EMAIL: "usernameOrEmail",
     USER_PASSWORD: "userPassword",
 };
 
+// Initial state for the form.
 const initialState = {
     usernameOrEmail: "",
     userPassword: "",
@@ -32,6 +35,7 @@ const initialState = {
     rememberUser: true,
 };
 
+// Reducer function to handle state updates.
 const reducer = (state, action) => {
     switch (action.type) {
         case ACTIONS.SET_FIELD:
@@ -66,6 +70,7 @@ const reducer = (state, action) => {
     }
 };
 
+// SignIn component is responsible for rendering a sign-in form.
 const SignIn = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { closeModel } = useModelState();
@@ -79,11 +84,13 @@ const SignIn = () => {
         rememberUser,
     } = state;
 
+    // Destructure form error values for individual fields.
     const {
         usernameOrEmail: usernameOrEmailError,
         userPassword: userPasswordError,
     } = formError;
 
+    // Function to verify user credentials and perform sign-in.
     const verifyUser = async (username_or_email, password, is_username) => {
         dispatch({ type: ACTIONS.SET_SIGNIN_LOADING, payload: true });
         try {
@@ -119,12 +126,14 @@ const SignIn = () => {
         }
     };
 
+    // Function to handle form submission.
     const handleSubmit = (event) => {
         event.preventDefault();
         const submittedUsernameOrEmail = usernameOrEmail.trim();
         const submittedUserPassword = userPassword.trim();
         let isFormValid = true;
 
+        // Check if any field is empty and update formError accordingly.
         for (const fieldName in INPUT_FIELD_NAMES) {
             const fieldNameValue = INPUT_FIELD_NAMES[fieldName];
             const trimmerValue = state[fieldNameValue].trim();
@@ -161,6 +170,7 @@ const SignIn = () => {
         }
     };
 
+    // Function to handle input field changes.
     const handelInputChange = (event) => {
         const { name, value } = event.target;
         dispatch({
@@ -172,6 +182,7 @@ const SignIn = () => {
         });
     };
 
+    // Function to handle input field blur events and update formError.
     const handelBlurInput = (event) => {
         const { name, value } = event.target;
         dispatch({
@@ -183,12 +194,15 @@ const SignIn = () => {
         });
     };
 
+    // Function to toggle password visibility.
     const toggleShowPassword = () => {
         dispatch({
             type: ACTIONS.SET_SHOW_PASSWORD,
             payload: !showPassword,
         });
     };
+
+    // Define an array of form fields with their configurations.
     const formFields = [
         {
             name: INPUT_FIELD_NAMES.USERNAME_OR_EMAIL,
@@ -208,6 +222,7 @@ const SignIn = () => {
     ];
     return (
         <>
+            {/* Sign-in form container with form fields. */}
             <StyledComponent.SignInFormContainer onSubmit={handleSubmit}>
                 <StyledComponent.SigninInputFieldListContainer>
                     {formFields.map(
@@ -293,4 +308,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default SignIn; // Export the SignIn component.

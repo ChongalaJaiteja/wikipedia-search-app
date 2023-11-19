@@ -10,12 +10,17 @@ import HistoryDateItemCard from "../historyDateItemCard";
 import * as StyledComponent from "./styledComponent";
 import Toaster from "../toaster";
 import toast from "react-hot-toast";
+import { SelectAllHistoryItemsText } from "../historyDateItemCard/styledComponent";
 
+// Create a context for managing history-related state
 const HistoryContext = createContext();
 
+// Create a custom hook for using history-related context
 export const useHistoryContext = () => useContext(HistoryContext);
 
+// Define the History component responsible for displaying user history
 export const History = () => {
+    // Initialize state variables to manage history-related data
     const [historyList, setHistoryList] = useState([]);
     const [historyError, setHistoryError] = useState(false);
     const [historySearchInput, setHistorySearchInput] = useState("");
@@ -25,8 +30,10 @@ export const History = () => {
     const [offset, setOffset] = useState(0);
     const [showSearchInputSm, setShowSearchInputSm] = useState(false);
     const [totalHistorySelected, setTotalHistorySelected] = useState(0);
+    const [isAllHistorySelected, setIsAllHistorySelected] = useState(false);
     const navigate = useNavigate();
 
+    // Function to fetch user history
     const fetchHistory = async () => {
         setIsLoading(true);
         setHistoryError(false);
@@ -41,6 +48,7 @@ export const History = () => {
             };
             const response = await fetch(url, options);
             const data = await response.json();
+            // Format the history data to include 'isSelected' property
             const formattedData = data.map(({ date, history }) => ({
                 date,
                 history: history.map((eachHistoryItem) => ({
@@ -57,6 +65,7 @@ export const History = () => {
         }
     };
 
+    // Function to handle input changes in the search history field
     const handleOnChange = (event) => {
         setHistorySearchInput(event.target.value);
     };
@@ -66,6 +75,7 @@ export const History = () => {
     }, []);
 
     useEffect(() => {
+        // Calculate the total number of selected history items
         let total = 0;
         historyList.forEach(({ history }) => {
             total += history.filter(({ isSelected }) => isSelected).length;
@@ -73,12 +83,14 @@ export const History = () => {
         setTotalHistorySelected(total);
     }, [historyList]);
 
+    // Define images for various states (reload and no results)
     const images = {
         reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
         noResults:
             "https://img.freepik.com/free-vector/flat-design-no-data-illustration_23-2150527142.jpg?w=740&t=st=1695036731~exp=1695037331~hmac=a793ff5dde6918e306e53726059eb01dd5fa0b560067e4e9df6e20a3d4715314",
     };
 
+    // Function to handle selection of history by date
     const onSelectHistoryDate = (isChecked, selectedDate) => {
         setHistoryList((prevList) =>
             prevList.map(({ date, history }) => ({
@@ -94,6 +106,7 @@ export const History = () => {
         );
     };
 
+    // Function to handle selection of individual history items
     const onSelectHistoryItem = (isChecked, historyId) => {
         setHistoryList((prevList) =>
             prevList.map(({ date, history }) => ({
@@ -109,6 +122,7 @@ export const History = () => {
         );
     };
 
+    // Function to render the filtered history data
     const renderHistory = () => {
         const filteredHistoryList = historyList.reduce(
             (result, { date, history }) => {
@@ -128,6 +142,10 @@ export const History = () => {
             []
         );
 
+        const selectAllHistoryItems = (event) => {
+            setIsAllHistorySelected((prev) => !prev);
+        };
+
         return (
             <HistoryContext.Provider
                 value={{
@@ -137,6 +155,14 @@ export const History = () => {
                 }}
             >
                 <StyledComponent.HistoryItemsBgContainer>
+                    <StyledComponent.SelectAllHistoryItemsCheckBoxBgContainer>
+                        <StyledComponent.SelectAllHistoryItemsCheckBox
+                            type="checkbox"
+                            onChange={selectAllHistoryItems}
+                            checked={isAllHistorySelected}
+                        />
+                        <label>Select All</label>
+                    </StyledComponent.SelectAllHistoryItemsCheckBoxBgContainer>
                     {filteredHistoryList.map((eachHistoryByDate) => (
                         <HistoryDateItemCard
                             historyDateItemCardDetails={eachHistoryByDate}
@@ -148,6 +174,7 @@ export const History = () => {
         );
     };
 
+    // Function to handle canceling the deletion of selected history items
     const handleCancelDeleteHistory = () => {
         setTotalHistorySelected(0);
         setHistoryList((prevList) =>
@@ -161,8 +188,10 @@ export const History = () => {
         );
     };
 
+    // Function to handle the deletion of selected history items
     const handleDeleteHistory = async (event) => {
         event.preventDefault();
+        // Get the IDs of selected history items for deletion
         const historyIds = historyList.reduce((result, { history }) => {
             const selectedIds = history
                 .filter(({ isSelected }) => isSelected)
@@ -194,6 +223,7 @@ export const History = () => {
         }
     };
 
+    // Define a loading view with a content loader
     const svgLoader = (
         <ContentLoader
             speed={0.3}
@@ -208,8 +238,10 @@ export const History = () => {
             <rect x="5" y="6" rx="10" ry="10" width="20%" height="17" />
         </ContentLoader>
     );
+
+    // Define the views for PageView component
     const renderViews = {
-        fetchData: fetchHistory,
+        fetchData: fetchHistory, // Function to fetch history data
         loadingView: { isLoading, svgLoader, limit },
         successView: {
             data: historyList,

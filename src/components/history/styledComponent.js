@@ -4,6 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IconButton } from "@mui/material";
 import { AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import Checkbox from "@mui/material/Checkbox";
 
 export const HistoryBgContainer = styled.div`
     background-color: var(--theme-page-bg-color);
@@ -20,7 +21,7 @@ export const HistoryNavBar = styled.nav`
     top: 0;
     background-color: var(--theme-container-bg-color);
     margin-bottom: 2.3em;
-    min-height: 3.5em;
+    min-height: 3.6rem;
     display: flex;
     padding-inline: clamp(0.5em, 1vw + 0.45em, 1.5em);
 `;
@@ -93,9 +94,30 @@ export const HistoryItemsBgContainer = styled.ul`
     flex-direction: column;
     gap: 1.32em;
     align-self: center;
-    width: 100%;
+    width: min(100%, 86rem);
     & > :nth-last-child(1) {
         margin-bottom: 1.5em;
+    }
+`;
+
+export const SelectAllHistoryItemsCheckBoxBgContainer = styled.li`
+    border-radius: 13px;
+    margin-inline: clamp(0.4em, 1vw + 0.6em, 1.8em);
+    padding-block: 0.5em;
+    display: flex;
+    gap: 0.4rem;
+`;
+
+export const SelectAllHistoryItemsCheckBox = styled(Checkbox)`
+    color: var(--theme-primary-text-color) !important;
+    &.Mui-checked {
+        color: var(--theme-primary-color) !important;
+    }
+    &.MuiCheckbox-root {
+        padding: 0;
+        & > * {
+            font-size: clamp(0.4rem, 1vw + 0.9rem, 1.27rem);
+        }
     }
 `;
 

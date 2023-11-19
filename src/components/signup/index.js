@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useModelState } from "../../modelStateContext";
 
+// Define constant values for input field names.
 const INPUT_FIELD_NAMES = {
     USERNAME: "username",
     USER_PASSWORD: "userPassword",
@@ -12,6 +13,7 @@ const INPUT_FIELD_NAMES = {
     USER_CONFIRM_PASSWORD: "userConfirmPassword",
 };
 
+// Define the initial state for the signup form.
 const initialState = {
     username: "",
     userEmail: "",
@@ -30,6 +32,7 @@ const initialState = {
     isSignupLoading: false,
 };
 
+// Define constant actions to be used in the reducer.
 const ACTIONS = {
     SET_FIELD: "set-user-fields",
     SET_FORM_ERROR: "set-form-error",
@@ -38,6 +41,7 @@ const ACTIONS = {
     SET_SIGNUP_LOADING: "set-signup-loading",
 };
 
+// Define error messages for form validation.
 const ERROR_MESSAGE = {
     EMPTY_INPUT: "Field can not be empty.",
     USER_EMAIL_ERROR: "Invalid Email",
@@ -48,6 +52,7 @@ const ERROR_MESSAGE = {
     USER_CONFIRM_PASSWORD_ERROR: "* Password Not Matched",
 };
 
+// Reducer function to handle state updates.
 const reducer = (state, action) => {
     switch (action.type) {
         case ACTIONS.SET_FIELD:
@@ -84,6 +89,7 @@ const reducer = (state, action) => {
     }
 };
 
+// Signup component is responsible for rendering a sign-up form.
 const Signup = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { showModel, closeModel } = useModelState();
@@ -110,6 +116,7 @@ const Signup = () => {
         userConfirmPassword: showUserConfirmPassword,
     } = showPassword;
 
+    // Function to verify the form data and perform sign-up.
     const verifyFormData = (
         userEmail,
         username,
@@ -173,6 +180,7 @@ const Signup = () => {
         return isFormValid;
     };
 
+    // Function to verify user credentials and perform sign-up.
     const verifyUser = async (username, email, password) => {
         dispatch({ type: ACTIONS.SET_SIGNUP_LOADING, payload: true });
         try {
@@ -205,6 +213,7 @@ const Signup = () => {
         }
     };
 
+    // Function to handle form submission.
     const handleSubmit = (event) => {
         event.preventDefault();
         const submittedUserEmail = userEmail.trim();
@@ -243,6 +252,7 @@ const Signup = () => {
         }
     };
 
+    // Function to handle input changes.
     const handelInputChange = (event) => {
         const { name, value } = event.target;
         dispatch({
@@ -254,6 +264,7 @@ const Signup = () => {
         });
     };
 
+    // Function to handle input blur and validate.
     const handelBlurInput = (event) => {
         const { name, value } = event.target;
         dispatch({
@@ -265,6 +276,7 @@ const Signup = () => {
         });
     };
 
+    // Function to toggle password visibility.
     const toggleShowPassword = (fieldName) => {
         const value =
             fieldName === INPUT_FIELD_NAMES.USER_PASSWORD
@@ -279,6 +291,7 @@ const Signup = () => {
         });
     };
 
+    // Define form input fields with their configurations.
     const formFields = [
         {
             name: INPUT_FIELD_NAMES.USER_EMAIL,
@@ -314,6 +327,7 @@ const Signup = () => {
         },
     ];
 
+    // Render the Signup form.
     return (
         <StyledComponent.SignupFormContainer onSubmit={handleSubmit}>
             <StyledComponent.SignupInputFieldListContainer>

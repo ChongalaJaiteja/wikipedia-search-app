@@ -1,29 +1,39 @@
+// Import necessary modules and components
 import React, { useState, useEffect } from "react";
-import { useModelState } from "../../modelStateContext";
-import { useSearchParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import AllSearchItem from "../allsearchItem";
-import Pagination from "../pagination";
-import ContentLoader from "react-content-loader";
-import * as StyledComponent from "./styledComponent";
-import PopupModel from "../popupModel";
-import ShareModel from "../shareModel";
-import PageView from "../pageView";
+import { useModelState } from "../../modelStateContext"; // Import custom hook for model state context
+import { useSearchParams } from "react-router-dom"; // Import hook for accessing URL search parameters
+import { v4 as uuidv4 } from "uuid"; // Import UUID generator
+import AllSearchItem from "../allsearchItem"; // Import AllSearchItem component
+import Pagination from "../pagination"; // Import Pagination component
+import ContentLoader from "react-content-loader"; // Import ContentLoader component for loading animations
+import * as StyledComponent from "./styledComponent"; // Import styled components
+import PopupModel from "../popupModel"; // Import PopupModel component
+import ShareModel from "../shareModel"; // Import ShareModel component
+import PageView from "../pageView"; // Import PageView component
 
+// Define the AllSearchResults component responsible for displaying search results
 const AllSearchResults = () => {
+    // Extract the 'search_query' parameter from the URL
     const [query] = useSearchParams();
     const searchQuery = query.get("search_query");
+
+    // Initialize state variables for loading, search results, total results, current page, error, and offset
     const [isLoading, setLoading] = useState(true);
     const [searchResults, setSearchResults] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [error, setError] = useState(null);
     const [offset, setOffset] = useState(0);
-    const limit = 10;
+    const limit = 10; // Define the limit of search results to display
     const [fetchTime, setFetchTime] = useState(0);
+
+    // Use the 'useModelState' hook to access model state functions
     const { openModel } = useModelState();
+
+    // Initialize state for sharing a link
     const [shareLink, setShareLink] = useState("");
 
+    // Define a ContentLoader animation for loading placeholders
     const svgLoader = (
         <ContentLoader
             speed={0.3}
@@ -39,21 +49,25 @@ const AllSearchResults = () => {
         </ContentLoader>
     );
 
+    // Define image URLs for different views (reload and no results)
     const images = {
         reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
         noResults: "../../asserts/No data-rafiki.png",
     };
 
+    // Define a function to handle the current page change
     const handelCurrentPage = ({ currentPage, offset }) => {
         setCurrentPage(currentPage);
         setOffset(offset);
     };
 
+    // Define a function to handle sharing a link
     const onShareLink = (link) => {
         setShareLink(link);
         openModel();
     };
 
+    // Define a function to render the search results
     const renderResults = () => (
         <>
             <PopupModel>
@@ -91,6 +105,7 @@ const AllSearchResults = () => {
         </>
     );
 
+    // Define a function to fetch search results from the Wikipedia API
     const fetchData = async () => {
         setLoading(true);
         setError(null);
@@ -110,6 +125,7 @@ const AllSearchResults = () => {
         }
     };
 
+    // Use effects to fetch data and reset pagination when the search query changes
     useEffect(() => {
         setCurrentPage(1);
         setOffset(0);
@@ -120,6 +136,7 @@ const AllSearchResults = () => {
         fetchData();
     }, [offset]);
 
+    // Define render views for different states (fetching, success, failure)
     const renderViews = {
         fetchData: fetchData,
         loadingView: { isLoading, svgLoader, limit },
@@ -135,7 +152,9 @@ const AllSearchResults = () => {
         },
     };
 
+    // Render the PageView component with the chosen view
     return <PageView renderViews={renderViews} />;
 };
 
+// Export the AllSearchResults component
 export default AllSearchResults;

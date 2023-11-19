@@ -2,13 +2,21 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Masonry from "react-responsive-masonry";
 import { v4 as uuidv4 } from "uuid";
+import IconButton from "@mui/material/IconButton"; // Import IconButton component from Material-UI
+import Tooltip from "@mui/material/Tooltip"; // Import Tooltip component from Material-UI
 import ContentLoader from "react-content-loader";
 import * as StyledComponent from "./styledComponent";
 import Pagination from "../pagination";
 import { useAuthContext } from "../../authContext";
 import PageView from "../pageView";
+import * as React from "react";
+import { useModelState } from "../../modelStateContext";
+import PopupModel from "../popupModel";
+import ShareModel from "../shareModel";
 
+// Define a functional component called ImageSearch
 const ImageSearch = () => {
+    // Extract the search query from the URL using useSearchParams
     const [query] = useSearchParams();
     const searchQuery = query.get("search_query");
     const limit = 10;
@@ -17,8 +25,11 @@ const ImageSearch = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setError] = useState(false);
     const [imagesList, setImageUrls] = useState([]);
+    const [shareLink, setShareLink] = useState("");
     const { jwtToken, isSignedIn } = useAuthContext();
+    const { openModel } = useModelState();
 
+    // Define a ContentLoader component for loading animation
     const svgLoader = (
         <ContentLoader
             speed={0.4}
@@ -34,21 +45,25 @@ const ImageSearch = () => {
         </ContentLoader>
     );
 
+    // Define images for error and no results
     const images = {
         reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
         noResults:
             "https://img.freepik.com/free-vector/flat-design-no-data-illustration_23-2150527142.jpg?w=740&t=st=1695036731~exp=1695037331~hmac=a793ff5dde6918e306e53726059eb01dd5fa0b560067e4e9df6e20a3d4715314",
     };
 
+    // Define a function to handle current page changes
     const handelCurrentPage = ({ currentPage, offset }) => {
         setCurrentPage(currentPage);
         setOffset(offset);
     };
 
+    // Define a function to fetch images from Wikipedia
     const fetchImages = async () => {
         setError(false);
         setIsLoading(true);
         try {
+            // Fetch Wikipedia search results for the given search query
             const titlesResponse = await fetch(
                 `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery}&format=json&origin=*&srprop=title&srlimit=${limit}&sroffset=${offset}`
             );
@@ -59,15 +74,18 @@ const ImageSearch = () => {
 
             const fetchedImages = [];
 
+            // Fetch images for each Wikipedia title
             const imagePromises = fetchedTitles.map(async (wikipediaTitle) => {
+                // Fetch images for a specific Wikipedia title
                 const imageResponse = await fetch(
-                    `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=images&titles=${wikipediaTitle}`
+                    `${process.env.REACT_APP_WIKI_IMG_URL}${wikipediaTitle}`
                 );
                 const imageData = await imageResponse.json();
                 const images =
                     imageData.query.pages[Object.keys(imageData.query.pages)[0]]
                         .images || [];
                 images.forEach(({ title }) => {
+                    // Filter and store images with .jpg or .jpeg extensions
                     if (
                         title.toLowerCase().endsWith(".jpg") ||
                         title.toLowerCase().endsWith(".jpeg")
@@ -81,6 +99,7 @@ const ImageSearch = () => {
 
             await Promise.all(imagePromises);
 
+            // Format fetched images
             const formattedImages = fetchedImages
                 .filter(
                     (image, index, self) =>
@@ -94,22 +113,27 @@ const ImageSearch = () => {
                     } else newTitle = newTitle.slice(0, newTitle.length - 5);
 
                     return {
-                        url: `https://en.wikipedia.org/wiki/Special:FilePath/${title}`,
+                        url: `${process.env.REACT_APP_WIKI_PAGE_URL}/Special:FilePath/${title}`,
                         title: newTitle,
                         wikipediaTitle,
                     };
                 });
+
+            // Set the formatted images to the component's state
             setImageUrls(formattedImages);
         } catch (error) {
+            // Handle errors during the fetch process
             setError(true);
         } finally {
             setIsLoading(false);
         }
     };
 
+    // Define a function to handle image click
     const onClickImage = async ({ wikipediaTitle }) => {
-        const link = `https://en.wikipedia.org/wiki/${wikipediaTitle}`;
+        const link = `${process.env.REACT_APP_WIKI_PAGE_URL}/${wikipediaTitle}`;
         try {
+            // Define the URL for saving history data
             const url = `${process.env.REACT_APP_BASE_URL}/history`;
             const options = {
                 headers: {
@@ -122,15 +146,74 @@ const ImageSearch = () => {
                     link,
                 }),
             };
+
+            // Perform a POST request to save history data
             await fetch(url, options);
         } catch (error) {
             console.log(error);
         }
     };
 
+    const LongMenu = (link) => {
+        const options = ["Share"];
+        const [anchorEl, setAnchorEl] = useState(null);
+        const open = Boolean(anchorEl);
+
+        const handleClick = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+
+        const handleShare = () => {
+            const url = `${process.env.REACT_APP_WIKI_PAGE_URL}/${link}`;
+            setShareLink(url);
+            openModel();
+            handleClose();
+        };
+        return (
+            <>
+                <IconButton
+                    aria-label="more"
+                    id="long-button"
+                    aria-controls={open ? "long-menu" : undefined}
+                    aria-expanded={open ? "true" : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    <StyledComponent.ThreeDotsIcon />
+                </IconButton>
+                <StyledComponent.ThreeDotsMenu
+                    id="long-menu"
+                    MenuListProps={{
+                        "aria-labelledby": "long-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    {options.map((option) => (
+                        <StyledComponent.ThreeDotsMenuItem
+                            key={option}
+                            selected={option === "Pyxis"}
+                            onClick={handleShare}
+                        >
+                            {option}
+                        </StyledComponent.ThreeDotsMenuItem>
+                    ))}
+                </StyledComponent.ThreeDotsMenu>
+            </>
+        );
+    };
+
+    // Define a function to render the images view
     const renderImagesView = () => {
         return (
             <>
+                <PopupModel>
+                    <ShareModel link={shareLink} />
+                </PopupModel>
                 <StyledComponent.ResponsiveMansoryLayout
                     columnsCountBreakPoints={{
                         120: 1,
@@ -143,37 +226,36 @@ const ImageSearch = () => {
                 >
                     <Masonry gutter="1em">
                         {imagesList.map((eachImageCard, index) => (
-                            <StyledComponent.WikipediaTitleLink
-                                href={`https://en.wikipedia.org/wiki/${eachImageCard.wikipediaTitle}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                key={uuidv4()}
-                                onClick={() =>
-                                    isSignedIn && onClickImage(eachImageCard)
-                                }
-                            >
-                                <StyledComponent.ImageCard
+                            <StyledComponent.WikiImageCard>
+                                <StyledComponent.ImageLink
+                                    href={`${process.env.REACT_APP_WIKI_PAGE_URL}/${eachImageCard.wikipediaTitle}`}
+                                    target="_blank"
+                                    rel="noreferrer"
                                     key={uuidv4()}
-                                    title={eachImageCard.title}
+                                    onClick={() =>
+                                        isSignedIn &&
+                                        onClickImage(eachImageCard)
+                                    }
                                 >
-                                    <StyledComponent.WikipediaImage
+                                    <StyledComponent.WikiImage
                                         src={eachImageCard.url}
                                         alt={eachImageCard.title}
                                         loading="lazy"
                                     />
-                                    <StyledComponent.ImageCardContent>
-                                        <StyledComponent.WikipediaTitleLink
-                                            href={`https://en.wikipedia.org/wiki/${eachImageCard.wikipediaTitle}`}
+                                </StyledComponent.ImageLink>
+                                <StyledComponent.WikiImageCardFooterContainer>
+                                    <StyledComponent.ImageCardTitleContainer>
+                                        <StyledComponent.ImageCardTitle
+                                            href={`${process.env.REACT_APP_WIKI_PAGE_URL}/${eachImageCard.wikipediaTitle}`}
                                             target="_blank"
                                             rel="noreferrer"
                                         >
-                                            <StyledComponent.ImageCardTitle>
-                                                {eachImageCard.title}
-                                            </StyledComponent.ImageCardTitle>
-                                        </StyledComponent.WikipediaTitleLink>
-                                    </StyledComponent.ImageCardContent>
-                                </StyledComponent.ImageCard>
-                            </StyledComponent.WikipediaTitleLink>
+                                            {eachImageCard.title}
+                                        </StyledComponent.ImageCardTitle>
+                                    </StyledComponent.ImageCardTitleContainer>
+                                    {LongMenu(eachImageCard.wikipediaTitle)}
+                                </StyledComponent.WikiImageCardFooterContainer>
+                            </StyledComponent.WikiImageCard>
                         ))}
                     </Masonry>
                 </StyledComponent.ResponsiveMansoryLayout>
@@ -189,10 +271,12 @@ const ImageSearch = () => {
         );
     };
 
+    // Define a useEffect to fetch images when searchQuery or offset changes
     useEffect(() => {
         fetchImages();
     }, [searchQuery, offset]);
 
+    // Define an object to store different render views based on the data and state
     const renderViews = {
         fetchData: fetchImages,
         loadingView: { isLoading, svgLoader, limit },
@@ -208,6 +292,7 @@ const ImageSearch = () => {
         },
     };
 
+    // Return the PageView component with renderViews and other props
     return (
         <PageView
             renderViews={renderViews}
@@ -219,4 +304,5 @@ const ImageSearch = () => {
     );
 };
 
+// Export the ImageSearch component as the default export
 export default ImageSearch;
