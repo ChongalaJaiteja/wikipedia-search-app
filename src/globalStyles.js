@@ -23,7 +23,6 @@ export const GlobalStyles = createGlobalStyle`
     --theme-warning-color:${(props) => props.theme.warningAccentColor};
     --theme-info-color:${(props) => props.theme.infoAccentColor};
     --theme-link-color : ${(props) => props.theme.linkColor};
-    ${"" /* --theme-text-color : ${(props) => props.theme.color}; */};
     --toggle-theme-transition : background-color 0.4s ease-out;
 }
 

@@ -50,6 +50,9 @@ const HistoryItem = ({ historyDetails }) => {
                 <StyledComponent.HistoryLinkToolTipButton>
                     <StyledComponent.HistoryItemLink href={url} target="_blank">
                         {/* Icon for the Wikipedia link */}
+                        <StyledComponent.LinkToHistoryItemText>
+                            Link
+                        </StyledComponent.LinkToHistoryItemText>
                         <StyledComponent.WikipediaLinkIcon />
                     </StyledComponent.HistoryItemLink>
                 </StyledComponent.HistoryLinkToolTipButton>

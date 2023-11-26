@@ -37,6 +37,9 @@ export const HistorySearchInputFormContainer = styled.form`
 export const ToolTipButton = styled(IconButton)`
     padding: 0 !important;
 `;
+export const LoaderBgContainer = styled.div`
+    margin: auto;
+`;
 export const NavigateBackIcon = styled(IoIosArrowBack)`
     cursor: pointer;
     font-size: clamp(0.6rem, 1vw + 1rem, 1.5rem);
@@ -183,4 +186,15 @@ export const DeleteBtn = styled.button`
             display: block;
         }
     }
+`;
+
+export const HistoryDeleteLoaderBgContainer = styled.div`
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
 `;

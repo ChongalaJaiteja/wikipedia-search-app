@@ -10,6 +10,8 @@ import * as StyledComponent from "./styledComponent"; // Import styled component
 import PopupModel from "../popupModel"; // Import PopupModel component
 import ShareModel from "../shareModel"; // Import ShareModel component
 import PageView from "../pageView"; // Import PageView component
+import errorImg from "../../asserts/something-went-wrong.avif";
+import noResultsFound from "../../asserts/noData.png";
 
 // Define the AllSearchResults component responsible for displaying search results
 const AllSearchResults = () => {
@@ -51,8 +53,8 @@ const AllSearchResults = () => {
 
     // Define image URLs for different views (reload and no results)
     const images = {
-        reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
-        noResults: "../../asserts/No data-rafiki.png",
+        reload: errorImg,
+        noResults: noResultsFound,
     };
 
     // Define a function to handle the current page change
@@ -153,7 +155,7 @@ const AllSearchResults = () => {
     };
 
     // Render the PageView component with the chosen view
-    return <PageView renderViews={renderViews} />;
+    return <PageView renderViews={renderViews} isAllsearchResults={true} />;
 };
 
 // Export the AllSearchResults component

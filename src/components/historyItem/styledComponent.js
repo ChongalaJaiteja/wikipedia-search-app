@@ -59,6 +59,21 @@ export const HistoryLinkToolTipButton = styled(ToolTipButton)``;
 export const HistoryItemLink = styled.a`
     color: var(--theme-primary-text-color);
     font-size: clamp(0.4rem, 1vw + 0.9rem, 1.1rem);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    text-decoration: none;
+    &:hover {
+        color: var(--theme-link-color);
+    }
+`;
+
+export const LinkToHistoryItemText = styled.p`
+    font-size: clamp(0.4rem, 1vw + 0.5rem, 0.9rem);
+    display: none;
+    @media (min-width: 480px) {
+        display: block;
+    }
 `;
 
 export const WikipediaLinkIcon = styled(BiLinkExternal)`

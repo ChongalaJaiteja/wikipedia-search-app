@@ -13,6 +13,8 @@ import * as React from "react";
 import { useModelState } from "../../modelStateContext";
 import PopupModel from "../popupModel";
 import ShareModel from "../shareModel";
+import errorImg from "../../asserts/something-went-wrong.avif";
+import noResultsFound from "../../asserts/noData.png";
 
 // Define a functional component called ImageSearch
 const ImageSearch = () => {
@@ -47,9 +49,8 @@ const ImageSearch = () => {
 
     // Define images for error and no results
     const images = {
-        reload: "https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=996&t=st=1694927530~exp=1694928130~hmac=a1cb06f612d499000afda3bcecd029ad306e5b0635f232e33665d58e0ec9f4f1",
-        noResults:
-            "https://img.freepik.com/free-vector/flat-design-no-data-illustration_23-2150527142.jpg?w=740&t=st=1695036731~exp=1695037331~hmac=a793ff5dde6918e306e53726059eb01dd5fa0b560067e4e9df6e20a3d4715314",
+        reload: errorImg,
+        noResults: noResultsFound,
     };
 
     // Define a function to handle current page changes

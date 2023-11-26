@@ -48,7 +48,7 @@ const Pagination = ({
         }
     };
 
-    //pending
+    //TODO
     // const onSubmitPagintaionInput = (event) => {
     //     event.preventDefault();
     //     console.log(currentPage);
@@ -118,6 +118,7 @@ const Pagination = ({
                         </IconButton>
                     </Tooltip>
                 )}
+
                 <Tooltip title="Next Page">
                     <IconButton>
                         <StyledComponent.PaginationBtn

@@ -10,7 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { useAuthContext } from "../../authContext";
 import toast from "react-hot-toast";
-
 // import SearchSuggestion from "../searchSuggestion";
 
 const Home = () => {
@@ -30,7 +29,9 @@ const Home = () => {
             toast.error("Invalid Input");
         } else {
             // Redirect to the Wikipedia search page with the search query and type parameters
-            navigate(`/wikipedia-search-app/wikipedia?search_query=${searchInput.trim()}&type=ALL`);
+            navigate(
+                `/wikipedia-search-app/wikipedia?search_query=${searchInput.trim()}&type=ALL`
+            );
         }
     };
 
@@ -94,6 +95,7 @@ const Home = () => {
                         src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
                         alt="wikipedia-img"
                     />
+
                     <StyledComponent.SearchFormContainer onSubmit={onSubmit}>
                         {/* Input field for searching */}
                         <StyledComponent.SearchInput

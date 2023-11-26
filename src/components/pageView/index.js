@@ -10,6 +10,7 @@ const PageView = ({
     currentPage, // The current page number.
     offset, // The offset.
     handelCurrentPage, // A function to handle changing the current page.
+    isAllsearchResults, // A boolean flag indicating if it's an all search results
 }) => {
     // Destructuring renderViews to access different views.
     const { fetchData, loadingView, successView, failureView } = renderViews;
@@ -21,10 +22,13 @@ const PageView = ({
     const renderLoaderView = () => {
         return (
             <Loader
-                svgLoader={svgLoader}
+                // svgLoader={svgLoader}
                 limit={limit}
                 isImageLayout={isImageSearch}
-            />
+                isAllsearchResults={isAllsearchResults}
+            >
+                {svgLoader}
+            </Loader>
         );
     };
 
@@ -60,9 +64,11 @@ const PageView = ({
 
     // This function determines which view to render based on the provided props.
     const getData = () => {
-        if (isLoading) return renderLoaderView(); // If loading, show the loader view.
-        if (error) return renderFailureView(); // If there is an error, show the failure view.
-        if (data.length === 0) return renderNoResultsFound(); // If no results, show the "No Results Found" view.
+        if (isLoading)
+            return renderLoaderView(); // If loading, show the loader view.
+        else if (error)
+            return renderFailureView(); // If there is an error, show the failure view.
+        else if (data.length === 0) return renderNoResultsFound(); // If no results, show the "No Results Found" view.
         return renderResults(); // Otherwise, render the success view.
     };
 

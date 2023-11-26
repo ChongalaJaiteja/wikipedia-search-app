@@ -13,13 +13,13 @@ const scrollToTop = () => {
 };
 
 // Define a functional component called Loader
-const Loader = ({ svgLoader, limit, isImageLayout }) => {
+const Loader = ({ children, limit, isImageLayout, isAllsearchResults }) => {
     const loaders = [];
     scrollToTop();
 
     // Create an array of loader elements based on the limit
     for (let i = 0; i < limit; i++) {
-        loaders.push(React.cloneElement(svgLoader, { key: uuidv4() }));
+        loaders.push(React.cloneElement(children, { key: uuidv4() }));
     }
 
     // Return a responsive masonry layout for image loading or a styled container for other content
@@ -36,7 +36,9 @@ const Loader = ({ svgLoader, limit, isImageLayout }) => {
             <Masonry>{loaders}</Masonry>
         </ResponsiveMasonry>
     ) : (
-        <StyledComponent.ContentLoaderBgContainer>
+        <StyledComponent.ContentLoaderBgContainer
+            isAllsearchResults={isAllsearchResults}
+        >
             {loaders}
         </StyledComponent.ContentLoaderBgContainer>
     );
