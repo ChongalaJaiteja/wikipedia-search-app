@@ -27,6 +27,9 @@ export const GlobalStyles = createGlobalStyle`
 }
 
 /*Defining global CSS*/
+html {
+        -webkit-tap-highlight-color: transparent !important;
+    }
 body {
     padding: 0;
     margin: 0;
