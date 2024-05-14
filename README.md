@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+# Wikipedia Search App
+## Overview
+The Wikipedia Search App is a cool project that makes it super easy to find and share stuff from Wikipedia. Ever had trouble juggling tabs while researching? Well, not anymore!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Technologies Used
+- **Frontend** : ReactJS
+- **Backend** : NodeJS, ExpressJs
+- **Styling** : Styled Components
+- **Database** : SQLite
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Efficient Search**: Easily search Wikipedia articles with an intuitive interface.🔍
 
-Runs the app in the development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Visual Engagement**: Enhance your visual learning experience by exploring related images in a dedicated 'Image' tab.🖼️
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Simplified Sharing**: Share Wikipedia URLs effortlessly across multiple platforms like WhatsApp, Facebook, Twitter, and email.🌐
 
-### `npm test`
+- **Smooth Navigation**: Enjoy a user-friendly experience with pagination for both article and image search tabs.🚀
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Personalized History**: With user authentication, you get a personalized touch, and your clicked URLs and visited Wikipedia pages are saved.📚
 
-### `npm run build`
+- **Adaptive Viewing**: Optimize your experience with light 🌞 and dark 🌙 modes.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **User Profile Management**: Customizing your credentials is easy for a more personalized journey.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Organized History**: Review your search history in chronological order, with the option to delete entries.🗓️
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Demo
 
-### `npm run eject`
+[![Sudoku Solver Demo](https://img.youtube.com/vi/tugvonfZmlw/maxresdefault.jpg)](https://youtu.be/tugvonfZmlw)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Click the image above to watch the demo video.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Installation
+1. **Clone the repository**:
+`git clone https://github.com/ChongalaJaiteja/wikipedia-search-app.git`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Install dependencies**:
+`npm install`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Usage
+1. Run the development server:
+`npm run start`
 
-## Learn More
+2. Access the website in your browser at `http://localhost:5173`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
+The Wikipedia Search website is deployed on GitHub Pages. You can access it at [Wikipedia Search App](https://chongalajaiteja.github.io/wikipedia-search-app/).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Folder Structure
+- `src`: Contains the source code for the  Wikipedia Search website.
+- `components`: Contains React components
+- `public`: Contains static assets, such as images.
 
-### Code Splitting
+## Author
+[Chongala Jai teja](https://github.com/ChongalaJaiteja)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
